@@ -47,7 +47,7 @@
                         @include('admin.products.partials.form_price')
                     </div>
                     <div class="tab-pane fade show active " id="nav-combination" role="tabpanel" aria-labelledby="nav-combination-tab">
-                        <product-combination-component></product-combination-component>
+                        @include('admin.products.partials.form_combinations')
                     </div>
                     <div class="tab-pane fade" id="nav-seo" role="tabpanel" aria-labelledby="nav-seo-tab">
                         @include('admin.products.partials.form_seo')
@@ -91,6 +91,13 @@
     <script src="{{ asset('vendor/adminlte/plugins/iCheck/icheck.min.js') }}"></script>
     <script src="{{ asset('vendor/adminlte/plugins/select2/select2.min.js') }}"></script>
     <script src="{{ asset('js/products.js') }}"></script>
+    <script>
+            $(document).ready(function(e){
+    		$(".img-check").click(function(){
+				$(this).toggleClass("check");
+			});
+	});
+    </script>
     
 @endsection
 

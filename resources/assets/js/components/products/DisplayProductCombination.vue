@@ -26,10 +26,10 @@
                             </li>
                         </ul>
                     </div>
-                    <div v-for="(resul, index) in Nresul" :key="index">
-                        {{ resul.name }}
+                    <div v-for="(combination, index) in resulCombination" :key="index">
+                       {{ index }}
                         <select name="" id="" >
-                            <option v-for="(resul2, index) in resul.data" :key="index" :value="resul2.data">{{ resul2.data }}</option>
+                            <option v-for="(value, index) in combination" :key="index" :value="value">{{ value }}</option>
                         </select>  
                     </div>
                 </div>
@@ -44,19 +44,14 @@ export default {
     data(){
         return{
             combinations:[
-                {size:'S', color:'Rojo', dimension:'60x90cm', attribue:'Algodon'},
-                {size:'L', color:'Rojo', dimension:'40x90cm', attribue:'Lana'},
-                {size:'M', color:'Rojo'},
-                {size:'XL', color:'Rojo'},
-                {size:'S', color:'Azul'},
-                {size:'L', color:'Azul'},
-                {size:'S', color:'Verde'},
-                {size:'XS', color:'Verde'},
-                {size:'M', color:'Verde'},
-                {size:'L', color:'Verde'},
-                {size:'XL', color:'Verde'},
-                {size:'XXL', color:'Verde', dimension:'60x90cm'},
-                {size:'XXL', color:'Amarillo', dimension:'60x90cm'},
+                {"color": "Rojo", "key": "Talla", "value": "S" },
+                {"color": "Rojo", "key": "Talla", "value": "L" },
+                {"color": "Rojo", "key": "Talla", "value": "M" },
+                {"color": "Rojo", "key": "Dimensión", "value": "60x90cm" },
+                {"color": "Verde", "key": "Talla", "value": "S" },
+                {"color": "Verde", "key": "Talla", "value": "L" },
+                {"color": "Verde", "key": "Talla", "value": "M" },
+                {"color": "Verde", "key": "Talla", "value": "XL" },
             ],
             resulColores:[],
             resulCombination:[],
@@ -75,6 +70,94 @@ export default {
                     color:data.color
                 });
             });
+        },
+        fillSize(color){
+            // //const resul =  this.combinations.filter(item => item.color === color).map( item => ({ size:item.size, dimensión:item.dimension}));
+            let resul =  this.combinations.filter(item => item.color === color).map(item => ({attribute:item.key, value:item.value}));
+            let groups = {};
+            resul.forEach(data=>{
+                var groupName = data.attribute;
+                if (!groups[groupName]) {
+                    groups[groupName] = [];   
+                }
+                groups[groupName].push(data.value);
+            });
+           
+           this.resulCombination = groups;   
+        },
+       
+        
+        
+    }
+}
+</script>
+
+
+
+
+
+
+
+<!--
+
+<template>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12">
+            <div class="card card-default">
+                <div class="card-header">
+                    Combinaciones
+                </div>
+                <div class="card-body">
+                    <button type="button" @click="findCombination('Rojo')">Generar</button>
+                    <div>
+                        Colores
+                        <ul>
+                            <li v-for="(combination, index) in resulColores" :key="index">
+                                <button type="button" @click="fillSize(combination.color)">{{ combination.color }}</button>
+                            </li>
+                        </ul>
+                    </div>
+                    <div v-for="(resul, index) in Nresul" :key="index">
+                        {{ resul.name }}
+                        <select name="" id="" >
+                            <option v-for="(resul2, index) in resul.data" :key="index" :value="resul2.data">{{ resul2.data }}</option>
+                        </select>  
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+export default {
+    name:'ProductCombinationComponent',
+    data(){
+        return{
+            combinations:[
+                {color:"Rojo", hexa:"#E84C3D", data:["XS","S"]},
+                {color:"Azul", hexa:"#5897fb", data:["XS","S","M"]},
+                {color:"Negro", hexa:"#000000", data:["XS","S","M","L"]},
+                {color:"Amarillo", hexa:"#F1C40F",data:["XS","S","M"]},
+                {color:"Camel", hexa:"#C19A6B",data:["XS","S"]},
+            ],
+            resulColores:[],
+            resulCombination:[],
+           
+            Nresul:[],
+        }
+    },
+    props:['productid'],
+    methods:{
+         /** Filtramos el array para obtener los colores sin repetir */
+        findCombination(item){
+            const resulFilterColor =  Object.values(this.combinations.reduce((prev,next)=>Object.assign(prev,{[next.color]:next}),{}))
+            resulFilterColor.forEach(data => {
+                this.resulColores.push({
+                    color:data.color
+                });
+            });
+            console.log(this.resulColores);
         },
         fillSize(color){
             //const resul =  this.combinations.filter(item => item.color === color).map( item => ({ size:item.size, dimensión:item.dimension}));
@@ -123,3 +206,4 @@ export default {
     }
 }
 </script>
+-->

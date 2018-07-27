@@ -42,9 +42,7 @@ Route::prefix('api')->namespace('Api')->group(function () {
     Route::get('productImages/{id}', 'ApiController@product_images');
     Route::post('product-image/{id}/delete', 'ApiController@destroy_product_images');
     Route::put('update/{id}/product-price-specifics/', 'ApiController@update_price_specifics');
-
 });
-
 
 /** API Feature */
 Route::prefix('api')->namespace('Api')->group(function () {
@@ -69,6 +67,18 @@ Route::prefix('api')->namespace('Api')->group(function () {
 /** API Attributes and AttributeDetails */
 
 
+/** API ProductCombinations */
+Route::prefix('api')->namespace('Api')->group(function () {
+    Route::get('product/{id}/combinations', 'ApiCombinationController@get_combinations');
+});
+/** API ProductCombinations */
+
+
+Route::prefix('admin')->namespace('Admin')->group(function () {
+    Route::get('/combinations', 'ProductController@index');
+    Route::get('/combinations/create', 'ProductController@create');
+    Route::post('/combinations/create', 'ProductCombinationController@store');
+});
 
 
 Route::prefix('shopping_cart')->namespace('Cart')->group(function () {

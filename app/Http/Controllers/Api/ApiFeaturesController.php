@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Feature;
 use App\Product;
+use App\FeatureDetail;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -30,7 +31,6 @@ class ApiFeaturesController extends Controller
     public function feature_details($id)
     {
         $product = Product::find($id);
-
         $feature_details = $product->feature_details()->get()->pluck('id');
 
         return response()->json([

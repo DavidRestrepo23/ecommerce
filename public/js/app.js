@@ -51009,7 +51009,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     name: 'ProductCombinationComponent',
     data: function data() {
         return {
-            combinations: [{ size: 'S', color: 'Rojo', dimension: '60x90cm', attribue: 'Algodon' }, { size: 'L', color: 'Rojo', dimension: '40x90cm', attribue: 'Lana' }, { size: 'M', color: 'Rojo' }, { size: 'XL', color: 'Rojo' }, { size: 'S', color: 'Azul' }, { size: 'L', color: 'Azul' }, { size: 'S', color: 'Verde' }, { size: 'XS', color: 'Verde' }, { size: 'M', color: 'Verde' }, { size: 'L', color: 'Verde' }, { size: 'XL', color: 'Verde' }, { size: 'XXL', color: 'Verde', dimension: '60x90cm' }, { size: 'XXL', color: 'Amarillo', dimension: '60x90cm' }],
+            combinations: [{ "color": "Rojo", "key": "Talla", "value": "S" }, { "color": "Rojo", "key": "Talla", "value": "L" }, { "color": "Rojo", "key": "Talla", "value": "M" }, { "color": "Rojo", "key": "Dimensión", "value": "60x90cm" }, { "color": "Verde", "key": "Talla", "value": "S" }, { "color": "Verde", "key": "Talla", "value": "L" }, { "color": "Verde", "key": "Talla", "value": "M" }, { "color": "Verde", "key": "Talla", "value": "XL" }],
             resulColores: [],
             resulCombination: [],
 
@@ -51034,51 +51034,22 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             });
         },
         fillSize: function fillSize(color) {
-            //const resul =  this.combinations.filter(item => item.color === color).map( item => ({ size:item.size, dimensión:item.dimension}));
+            // //const resul =  this.combinations.filter(item => item.color === color).map( item => ({ size:item.size, dimensión:item.dimension}));
             var resul = this.combinations.filter(function (item) {
                 return item.color === color;
+            }).map(function (item) {
+                return { attribute: item.key, value: item.value };
             });
-
             var groups = {};
-            for (var i = 0; i < resul.length; i++) {
-                var groupName = resul[i].color;
-                if (!groups[groupName]) {
-                    groups[groupName] = [];
-                }
-                groups[groupName].push(resul[i]);
-            }
-
-            resul = [];
-            for (var groupName in groups) {
-                resul.push({ group: groupName, color: groups[groupName] });
-            }
-            var new_array = [];
             resul.forEach(function (data) {
-                var d = data.color;
-                d.forEach(function (da) {
-                    for (var i in da) {
-                        new_array.push({ name: i, data: da[i] });
-                    }
-                });
-            });
-            this.groupArray(new_array);
-        },
-        groupArray: function groupArray(array) {
-            var groups = {};
-            for (var i = 0; i < array.length; i++) {
-                var groupName = array[i].name;
+                var groupName = data.attribute;
                 if (!groups[groupName]) {
                     groups[groupName] = [];
                 }
-                groups[groupName].push(array[i]);
-            }
-            var arrs = [];
-            for (var groupName in groups) {
-                arrs.push({ name: groupName, data: groups[groupName] });
-            }
-            this.Nresul = arrs.filter(function (item) {
-                return item.name !== 'color';
+                groups[groupName].push(data.value);
             });
+
+            this.resulCombination = groups;
         }
     }
 });
@@ -51160,21 +51131,21 @@ var render = function() {
               )
             ]),
             _vm._v(" "),
-            _vm._l(_vm.Nresul, function(resul, index) {
+            _vm._l(_vm.resulCombination, function(combination, index) {
               return _c("div", { key: index }, [
                 _vm._v(
-                  "\n                    " +
-                    _vm._s(resul.name) +
+                  "\n                   " +
+                    _vm._s(index) +
                     "\n                    "
                 ),
                 _c(
                   "select",
                   { attrs: { name: "", id: "" } },
-                  _vm._l(resul.data, function(resul2, index) {
+                  _vm._l(combination, function(value, index) {
                     return _c(
                       "option",
-                      { key: index, domProps: { value: resul2.data } },
-                      [_vm._v(_vm._s(resul2.data))]
+                      { key: index, domProps: { value: value } },
+                      [_vm._v(_vm._s(value))]
                     )
                   })
                 )
@@ -51209,6 +51180,10 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(96)
+}
 var normalizeComponent = __webpack_require__(0)
 /* script */
 var __vue_script__ = __webpack_require__(90)
@@ -51217,7 +51192,7 @@ var __vue_template__ = __webpack_require__(91)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
-var __vue_styles__ = null
+var __vue_styles__ = injectStyle
 /* scopeId */
 var __vue_scopeId__ = null
 /* moduleIdentifier (server only) */
@@ -51319,6 +51294,128 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "ProductCombinationComponent",
@@ -51328,38 +51425,93 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       validated: false,
       attribute_product: [],
       values: [],
-      data: []
+      data: [],
+      combinations: [],
+      product_combinations: [],
+      product_images: [],
+      images_selected: [],
+      combination_edit: {
+        id: '',
+        reference: '',
+        stock: '',
+        price: '',
+        price_tax: '',
+        discount: ''
+      }
     };
   },
+
+  props: ['productid'],
   mounted: function mounted() {
     var _this = this;
 
-    axios.get("/api/attributes").then(function (response) {
+    /** Get All Attributes */
+    axios.get('/api/attributes').then(function (response) {
       _this.attributes = response.data.attributes;
     });
+
+    /** Get Combinations  */
+    this.getAllCombinations();
   },
 
   methods: {
     fillCombination: function fillCombination(value, hexadecimal) {
       this.validated = true;
-      var data_value = this.values;
-
       this.attribute_product = {
         color: value,
         hexa: hexadecimal
       };
     },
-    fillValues: function fillValues(data) {
-      var new_data = { data: data };
-      this.values = new_data;
+    fillValues: function fillValues(key, value) {
+      var color = this.attribute_product.color;
+      var array = { color: color, key: key, value: value };
+      this.combinations.push(array);
     },
     createCombination: function createCombination() {
-      var attributeProduct = this.attribute_product;
-      var values = this.values;
+      var _this2 = this;
 
-      var concat = Object.assign({}, attributeProduct, values);
+      var combinations = this.combinations;
+      axios.post('/admin/combinations/create', {
 
-      console.log(concat);
+        productId: this.productid,
+        combinations: combinations,
+        key_color: this.attribute_product.color,
+        images: JSON.stringify(this.images_selected)
+
+      }).then(function (response) {
+        if (response.data.response == 'Error') {
+          $.notify({ message: 'Esta combinación ya existe' }, { type: 'danger' });
+        } else {
+          $.notify({ message: 'Combinación creada con éxito' }, { type: 'success' });
+          _this2.combinations = [];
+          _this2.data = [];
+          _this2.attribute_product.color = [];
+          _this2.images_selected = [];
+          setTimeout(function () {
+            _this2.getAllCombinations();
+          }, 2000);
+        }
+      }).catch(function (error) {
+        var errors = error.response.data.errors;
+        $.notify({ message: errors.combination[0] }, { type: 'danger' });
+      });
+    },
+    getAllCombinations: function getAllCombinations() {
+      var _this3 = this;
+
+      axios.get('/api/product/' + this.productid + '/combinations').then(function (response) {
+        _this3.product_combinations = response.data.combinations.data;
+        _this3.product_images = response.data.images;
+        console.log(_this3.product_combinations);
+      });
+    },
+    editCombination: function editCombination(combination) {
+      this.combination_edit.id = combination.id;
+      this.combination_edit.reference = combination.reference;
+      this.combination_edit.stock = combination.stock;
+      this.combination_edit.price = combination.price;
+      this.combination_edit.price_tax = 0;
+      this.combination_edit.discount = 0;
     }
   }
 });
@@ -51377,76 +51529,164 @@ var render = function() {
     { staticClass: "row", staticStyle: { "margin-top": "30px" } },
     [
       _c("div", { staticClass: "col-xs-12 col-sm-8" }, [
+        _vm._m(0),
+        _vm._v(" "),
         _c("div", { staticClass: "card card-default" }, [
           _c("div", { staticClass: "card-body" }, [
-            _c("div", { staticClass: "row" }, [
-              _c("div", { staticClass: "col-xs-12 col-sm-4" }, [
-                _c("label", [_vm._v("Color")]),
-                _vm._v(" "),
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.attribute_product.color,
-                      expression: "attribute_product.color"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  attrs: { type: "text", disabled: "" },
-                  domProps: { value: _vm.attribute_product.color },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
+            _c("div", { staticClass: "card" }, [
+              _c("div", { staticClass: "card-header" }),
+              _vm._v(" "),
+              _c("div", { staticClass: "card-body" }, [
+                _c("div", { staticClass: "row" }, [
+                  _c("div", { staticClass: "col-xs-12 col-sm-4" }, [
+                    _c("label", [_vm._v("Color")]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.attribute_product.color,
+                          expression: "attribute_product.color"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        type: "text",
+                        name: "combination",
+                        disabled: ""
+                      },
+                      domProps: { value: _vm.attribute_product.color },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.attribute_product,
+                            "color",
+                            $event.target.value
+                          )
+                        }
                       }
-                      _vm.$set(
-                        _vm.attribute_product,
-                        "color",
-                        $event.target.value
-                      )
-                    }
-                  }
-                })
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-xs-12 col-sm-8" }, [
+                    _c("label", [_vm._v("Combinaciones")]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.data,
+                          expression: "data"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: { type: "text", disabled: "" },
+                      domProps: { value: _vm.data },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.data = $event.target.value
+                        }
+                      }
+                    })
+                  ])
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "card" }, [
+              _c("div", { staticClass: "card-header" }, [
+                _vm._v("Selecciona la imagenes para esta combinación")
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "col-xs-12 col-sm-4" }, [
-                _c("label", [_vm._v("Combinaciones")]),
-                _vm._v(" "),
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.data,
-                      expression: "data"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  attrs: { type: "text", disabled: "" },
-                  domProps: { value: _vm.data },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.data = $event.target.value
-                    }
-                  }
-                })
-              ]),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  staticClass: "col-xs-12 col-sm-4",
-                  staticStyle: { "margin-top": "30px" }
-                },
-                [
+              _c("div", { staticClass: "card-body" }, [
+                _c(
+                  "div",
+                  { staticClass: "row" },
+                  _vm._l(_vm.product_images, function(image, index) {
+                    return _c(
+                      "div",
+                      {
+                        key: index,
+                        staticClass: "col-xs-12 col-sm-3 col-md-2 text-center"
+                      },
+                      [
+                        _c("label", { staticClass: "btn btn-default" }, [
+                          _c("img", {
+                            staticClass: "img-check",
+                            attrs: {
+                              src: "/images/products/" + image.url,
+                              width: "80"
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.images_selected,
+                                expression: "images_selected"
+                              }
+                            ],
+                            staticClass: "hidden",
+                            attrs: {
+                              disabled: _vm.validated ? false : true,
+                              type: "checkbox",
+                              id: "item4",
+                              autocomplete: "off"
+                            },
+                            domProps: {
+                              value: image.url,
+                              checked: Array.isArray(_vm.images_selected)
+                                ? _vm._i(_vm.images_selected, image.url) > -1
+                                : _vm.images_selected
+                            },
+                            on: {
+                              change: function($event) {
+                                var $$a = _vm.images_selected,
+                                  $$el = $event.target,
+                                  $$c = $$el.checked ? true : false
+                                if (Array.isArray($$a)) {
+                                  var $$v = image.url,
+                                    $$i = _vm._i($$a, $$v)
+                                  if ($$el.checked) {
+                                    $$i < 0 &&
+                                      (_vm.images_selected = $$a.concat([$$v]))
+                                  } else {
+                                    $$i > -1 &&
+                                      (_vm.images_selected = $$a
+                                        .slice(0, $$i)
+                                        .concat($$a.slice($$i + 1)))
+                                  }
+                                } else {
+                                  _vm.images_selected = $$c
+                                }
+                              }
+                            }
+                          })
+                        ])
+                      ]
+                    )
+                  })
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "card" }, [
+              _c("div", { staticClass: "card-body" }, [
+                _c("div", { staticClass: "col-xs-12 col-sm-12 " }, [
                   _c(
                     "button",
                     {
-                      staticClass: "btn btn-info",
+                      staticClass: "btn btn-info pull-right",
                       attrs: {
                         type: "button",
                         disabled: _vm.validated ? false : true
@@ -51458,16 +51698,309 @@ var render = function() {
                       _vm._v(" Generar combinación")
                     ]
                   )
-                ]
-              )
+                ])
+              ])
             ])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "card card-default" }, [
+          _c("div", { staticClass: "card-header" }, [
+            _vm._v("\n            lista de combinaciones \n        ")
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "card-body" }, [
+            _c("table", { staticClass: "table table-bordered" }, [
+              _vm._m(1),
+              _vm._v(" "),
+              _c(
+                "tbody",
+                _vm._l(_vm.product_combinations, function(combination, index) {
+                  return _c("tr", { key: index }, [
+                    _c("td", [_vm._v(_vm._s(index + 1))]),
+                    _vm._v(" "),
+                    _c("td", { staticClass: "text-center" }, [
+                      _c("img", {
+                        attrs: {
+                          src: "/images/products/" + combination.image,
+                          width: "40",
+                          alt: ""
+                        }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(combination.combination))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(combination.stock))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(combination.humanPrice))]),
+                    _vm._v(" "),
+                    _c("td", { staticClass: "text-center" }, [
+                      _c("i", {
+                        staticClass: "fa fa-pencil",
+                        staticStyle: { cursor: "pointer" },
+                        attrs: {
+                          "data-toggle": "modal",
+                          "data-target": "#exampleModal2"
+                        },
+                        on: {
+                          click: function($event) {
+                            _vm.editCombination(combination)
+                          }
+                        }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _vm._m(2, true)
+                  ])
+                })
+              )
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass: "modal fade",
+                attrs: {
+                  id: "exampleModal2",
+                  tabindex: "-1",
+                  role: "dialog",
+                  "aria-labelledby": "exampleModal2Label",
+                  "aria-hidden": "true"
+                }
+              },
+              [
+                _c(
+                  "div",
+                  { staticClass: "modal-dialog", attrs: { role: "document" } },
+                  [
+                    _c("div", { staticClass: "modal-content" }, [
+                      _vm._m(3),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "modal-body" }, [
+                        _c("div", { staticClass: "card" }, [
+                          _c("div", { staticClass: "card-header" }, [
+                            _vm._v(
+                              "\n                          Editar ajustes\n                        "
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "card-body" }, [
+                            _c("div", { staticClass: "row" }, [
+                              _c("div", { staticClass: "col-xs-12 col-sm-6" }, [
+                                _c("div", { staticClass: "form-group" }, [
+                                  _c("label", [_vm._v("Referencia")]),
+                                  _vm._v(" "),
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.combination_edit.reference,
+                                        expression: "combination_edit.reference"
+                                      }
+                                    ],
+                                    staticClass: "form-control",
+                                    attrs: { type: "text" },
+                                    domProps: {
+                                      value: _vm.combination_edit.reference
+                                    },
+                                    on: {
+                                      input: function($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.$set(
+                                          _vm.combination_edit,
+                                          "reference",
+                                          $event.target.value
+                                        )
+                                      }
+                                    }
+                                  })
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "col-xs-12 col-sm-6" }, [
+                                _c("div", { staticClass: "form-group" }, [
+                                  _c("label", [_vm._v("Cantidad (stock)")]),
+                                  _vm._v(" "),
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.combination_edit.stock,
+                                        expression: "combination_edit.stock"
+                                      }
+                                    ],
+                                    staticClass: "form-control",
+                                    attrs: { type: "text" },
+                                    domProps: {
+                                      value: _vm.combination_edit.stock
+                                    },
+                                    on: {
+                                      input: function($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.$set(
+                                          _vm.combination_edit,
+                                          "stock",
+                                          $event.target.value
+                                        )
+                                      }
+                                    }
+                                  })
+                                ])
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "row" }, [
+                              _c("div", { staticClass: "col-xs-12 col-sm-4" }, [
+                                _c("div", { staticClass: "form-group" }, [
+                                  _c("label", [_vm._v("Precio")]),
+                                  _vm._v(" "),
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.combination_edit.price,
+                                        expression: "combination_edit.price"
+                                      }
+                                    ],
+                                    staticClass: "form-control",
+                                    attrs: { type: "number" },
+                                    domProps: {
+                                      value: _vm.combination_edit.price
+                                    },
+                                    on: {
+                                      input: function($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.$set(
+                                          _vm.combination_edit,
+                                          "price",
+                                          $event.target.value
+                                        )
+                                      }
+                                    }
+                                  })
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "col-xs-12 col-sm-4" }, [
+                                _c("div", { staticClass: "form-group" }, [
+                                  _c("label", [_vm._v("Impuesto (IVA)")]),
+                                  _vm._v(" "),
+                                  _c(
+                                    "select",
+                                    {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: _vm.combination_edit.price_tax,
+                                          expression:
+                                            "combination_edit.price_tax"
+                                        }
+                                      ],
+                                      staticClass: "form-control",
+                                      attrs: { name: "" },
+                                      on: {
+                                        change: function($event) {
+                                          var $$selectedVal = Array.prototype.filter
+                                            .call(
+                                              $event.target.options,
+                                              function(o) {
+                                                return o.selected
+                                              }
+                                            )
+                                            .map(function(o) {
+                                              var val =
+                                                "_value" in o
+                                                  ? o._value
+                                                  : o.value
+                                              return val
+                                            })
+                                          _vm.$set(
+                                            _vm.combination_edit,
+                                            "price_tax",
+                                            $event.target.multiple
+                                              ? $$selectedVal
+                                              : $$selectedVal[0]
+                                          )
+                                        }
+                                      }
+                                    },
+                                    [
+                                      _c("option", { attrs: { value: "0" } }, [
+                                        _vm._v("N/A")
+                                      ]),
+                                      _vm._v(" "),
+                                      _c(
+                                        "option",
+                                        { attrs: { value: "1.19" } },
+                                        [_vm._v("19%")]
+                                      )
+                                    ]
+                                  )
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "col-xs-12 col-sm-4" }, [
+                                _c("div", { staticClass: "form-group" }, [
+                                  _c("label", [_vm._v("Descuento")]),
+                                  _vm._v(" "),
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.combination_edit.discount,
+                                        expression: "combination_edit.discount"
+                                      }
+                                    ],
+                                    staticClass: "form-control",
+                                    attrs: { type: "number" },
+                                    domProps: {
+                                      value: _vm.combination_edit.discount
+                                    },
+                                    on: {
+                                      input: function($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.$set(
+                                          _vm.combination_edit,
+                                          "discount",
+                                          $event.target.value
+                                        )
+                                      }
+                                    }
+                                  })
+                                ])
+                              ])
+                            ])
+                          ])
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _vm._m(4)
+                    ])
+                  ]
+                )
+              ]
+            )
           ])
         ])
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "col-xs-12 col-sm-4" }, [
         _c("div", { staticClass: "card card-default" }, [
-          _vm._m(0),
+          _vm._m(5),
           _vm._v(" "),
           _c(
             "div",
@@ -51639,7 +52172,10 @@ var render = function() {
                                                 }
                                               },
                                               function($event) {
-                                                _vm.fillValues(_vm.data)
+                                                _vm.fillValues(
+                                                  attribute.name,
+                                                  detail.name
+                                                )
                                               }
                                             ]
                                           }
@@ -51647,7 +52183,7 @@ var render = function() {
                                         _vm._v(
                                           " " +
                                             _vm._s(detail.name) +
-                                            "\n                               \n                             "
+                                            "\n                             "
                                         )
                                       ])
                                 ]
@@ -51672,6 +52208,119 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "callout callout-info" }, [
+      _c("p", [
+        _c("b", [
+          _vm._v(
+            "Para crear los atributos y valores puedes ir menú y seleccionar "
+          ),
+          _c(
+            "a",
+            {
+              staticStyle: { color: "black" },
+              attrs: { href: "/admin/attributes", target: "_blank" }
+            },
+            [_vm._v("Atributos")]
+          ),
+          _vm._v(".")
+        ]),
+        _vm._v(" "),
+        _c("br"),
+        _vm._v(
+          '\n          Puedes introducir los atributos deseados (tales como "talla" o "color") y sus valores respectivos \n          ("XS", "rojo", etc.) seleccionandolos en la columna derecha. \n          A continuación, puedes seleccionar las imagenes para dicha combinación, posteriormente haz clic en '
+        ),
+        _c("b", [_vm._v('"Generar combinación":')]),
+        _vm._v(
+          " ¡automáticamente se crearán todas las combinaciones para ti!\n        "
+        )
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("th", { staticStyle: { "font-size": "11pt" } }, [_vm._v("ID")]),
+      _vm._v(" "),
+      _c("th", { staticStyle: { "font-size": "11pt" } }, [_vm._v("Imagen")]),
+      _vm._v(" "),
+      _c("th", { staticStyle: { "font-size": "11pt" } }, [
+        _vm._v("Combinación")
+      ]),
+      _vm._v(" "),
+      _c("th", { staticStyle: { "font-size": "11pt" } }, [_vm._v("Cantidad")]),
+      _vm._v(" "),
+      _c("th", { staticStyle: { "font-size": "11pt" } }, [
+        _vm._v("Precio final")
+      ]),
+      _vm._v(" "),
+      _c("th", { staticStyle: { "font-size": "11pt" } }, [_vm._v("Editar")]),
+      _vm._v(" "),
+      _c("th", { staticStyle: { "font-size": "11pt" } }, [_vm._v("Elimnar")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", { staticClass: "text-center" }, [
+      _c("i", {
+        staticClass: "fa fa-trash",
+        staticStyle: { cursor: "pointer" }
+      })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c(
+        "h5",
+        { staticClass: "modal-title", attrs: { id: "exampleModal2Label" } },
+        [_vm._v("Editar combinación")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-footer" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-secondary",
+          attrs: { type: "button", "data-dismiss": "modal" }
+        },
+        [_vm._v("Close")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        { staticClass: "btn btn-primary", attrs: { type: "button" } },
+        [_vm._v("Save changes")]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
     return _c("div", { staticClass: "card-header" }, [
       _c("p", [_vm._v("Valores")])
     ])
@@ -51691,6 +52340,49 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 93 */,
+/* 94 */,
+/* 95 */,
+/* 96 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(97);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(4)("76a5c720", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-69af3988\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ProductCombinationComponent.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-69af3988\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ProductCombinationComponent.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 97 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(3)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+
+// exports
+
 
 /***/ })
 /******/ ]);

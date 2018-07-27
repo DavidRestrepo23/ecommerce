@@ -1,9 +1,13 @@
 @csrf
-<div class="form-group">
-    {!! Form::label('title', 'Nombre del producto') !!}
-    {!! Form::text('title', old('title') , ['class' => 'form-control', 'id' => 'title']) !!}
-    <strong class="help-block title"></strong>
-
+<div class="card">
+    <div class="card-body">
+        <div class="form-group">
+            {!! Form::label('title', 'Nombre del producto') !!}
+            {!! Form::text('title', old('title') , ['class' => 'form-control', 'id' => 'title']) !!}
+            <strong class="help-block title"></strong>
+        
+        </div>
+    </div>
 </div>
 @if(!$product)
 <div class="form-group">
@@ -25,19 +29,23 @@
         <a class="nav-item nav-link" id="nav-description-tab" data-toggle="tab" href="#nav-description" role="tab" aria-controls="nav-description" aria-selected="false">Descripción</a>
     </div>
 </nav>
-<div class="tab-content" id="nav-tabContent">
-    <div class="tab-pane fade show active" id="nav-summary" role="tabpanel" aria-labelledby="nav-summary-tab">
-        <div class="form-group">
-            <div class="col-xs-12 col-sm-12">
-                {{Form::textarea('summary', old('summary') ,['id' => 'summary', 'data-toggle' => 'tooltip', 'rows' => '3' ])}}
-                <strong class="help-block summary"></strong>
+<div class="card">
+    <div class="card-body">
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-summary" role="tabpanel" aria-labelledby="nav-summary-tab">
+                <div class="form-group">
+                    <div class="col-xs-12 col-sm-12">
+                        {{Form::textarea('summary', old('summary') ,['id' => 'summary', 'data-toggle' => 'tooltip', 'rows' => '3' ])}}
+                        <strong class="help-block summary"></strong>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-    <div class="tab-pane fade" id="nav-description" role="tabpanel" aria-labelledby="nav-description-tab">
-        <div class="col-xs-12 col-sm-12">
-                {{Form::textarea('description', old('description') ,['id' => 'description', 'data-toggle' => 'tooltip', 'rows' => '3' ])}}
-                <strong style="font-size:11pt" class="help-block description"></strong>
+            <div class="tab-pane fade" id="nav-description" role="tabpanel" aria-labelledby="nav-description-tab">
+                <div class="col-xs-12 col-sm-12">
+                        {{Form::textarea('description', old('description') ,['id' => 'description', 'data-toggle' => 'tooltip', 'rows' => '3' ])}}
+                        <strong style="font-size:11pt" class="help-block description"></strong>
+                </div>
+            </div>
         </div>
     </div>
 </div>
