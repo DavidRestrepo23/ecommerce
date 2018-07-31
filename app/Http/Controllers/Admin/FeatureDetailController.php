@@ -9,7 +9,10 @@ use App\Http\Requests\FeatureDetailStoreRequest;
 use App\Http\Requests\FeatureDetailUpdateRequest;
 
 class FeatureDetailController extends Controller
-{
+{   
+    public function __construct(){
+        $this->middleware('dashboard');
+    }
     /**
      * Display a listing of the resource.
      *

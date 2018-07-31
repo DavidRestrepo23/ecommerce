@@ -10,7 +10,11 @@ use App\Http\Requests\AttributeDetailStoreRequest;
 use App\Http\Requests\AttributeDetailUpdateRequest;
 
 class AttributeDetailController extends Controller
-{
+{   
+
+    public function __construct(){
+        $this->middleware('dashboard');
+    }
     /**
      * Display a listing of the resource.
      *

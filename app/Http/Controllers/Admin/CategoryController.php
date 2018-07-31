@@ -9,7 +9,11 @@ use App\Http\Requests\CategoryStoreRequest;
 use App\Http\Requests\CategoryUpdateRequest;
 
 class CategoryController extends Controller
-{
+{   
+    public function __construct(){
+        $this->middleware('dashboard');
+    }
+
     /**
      * Display a listing of the resource.
      *

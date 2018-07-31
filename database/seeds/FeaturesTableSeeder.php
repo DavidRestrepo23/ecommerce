@@ -109,6 +109,18 @@ class FeaturesTableSeeder extends Seeder
                 'name' => 'Vestido a media pierna',
                 'feature_id' => $feature_property->id
             ]);
+            FeatureDetail::create([
+                'name' => 'Pantalón corto',
+                'feature_id' => $feature_property->id
+            ]);
+            FeatureDetail::create([
+                'name' => 'Short corto',
+                'feature_id' => $feature_property->id
+            ]);
+            FeatureDetail::create([
+                'name' => 'Short Largo',
+                'feature_id' => $feature_property->id
+            ]);
 
 
     }

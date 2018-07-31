@@ -18,7 +18,13 @@ use Illuminate\Support\Facades\Validator;
 
 
 class ProductController extends Controller
-{
+{   
+
+    public function __construct(){
+        $this->middleware('dashboard');
+    }
+
+
     /**
      * Display a listing of the resource.
      *

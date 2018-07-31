@@ -115,7 +115,7 @@ class AttributesTableSeeder extends Seeder
             
 
             
-            $attribute_size = Attribute::create(['name' => 'Tamaño']);
+            $attribute_size = Attribute::create(['name' => 'Talla']);
             
             AttributeDetail::create([
                 'name' => 'XS',
@@ -145,6 +145,33 @@ class AttributesTableSeeder extends Seeder
 
             AttributeDetail::create([
                 'name' => 'TU',
+                'attribute_id' => $attribute_size->id
+            ]);
+
+            AttributeDetail::create([
+                'name' => '4',
+                'attribute_id' => $attribute_size->id
+            ]);
+
+            AttributeDetail::create([
+                'name' => '6',
+                'attribute_id' => $attribute_size->id
+            ]);
+
+            AttributeDetail::create([
+                'name' => '8',
+                'attribute_id' => $attribute_size->id
+            ]);
+            AttributeDetail::create([
+                'name' => '12',
+                'attribute_id' => $attribute_size->id
+            ]);
+            AttributeDetail::create([
+                'name' => '14',
+                'attribute_id' => $attribute_size->id
+            ]);
+            AttributeDetail::create([
+                'name' => '16',
                 'attribute_id' => $attribute_size->id
             ]);
 

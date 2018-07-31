@@ -31,8 +31,6 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('products', 'ProductController');
 
-
-
 Route::get('/cart', 'Cart\ShoppingCartController@show')->name('shopping_cart.show');
 Route::get('/api/cart/products', 'Cart\ShoppingCartController@productsInCart');
 
@@ -73,12 +71,12 @@ Route::prefix('api')->namespace('Api')->group(function () {
 });
 /** API ProductCombinations */
 
-
-Route::prefix('admin')->namespace('Admin')->group(function () {
-    Route::get('/combinations', 'ProductController@index');
-    Route::get('/combinations/create', 'ProductController@create');
-    Route::post('/combinations/create', 'ProductCombinationController@store');
+/** API GroupCombinations */
+Route::prefix('api')->namespace('Api')->group(function () {
+    Route::get('group-combinations/{id}', 'ApiGroupCombinationController@get_group_combinations');
 });
+/** API GroupCombinations */
+
 
 
 Route::prefix('shopping_cart')->namespace('Cart')->group(function () {
@@ -87,13 +85,18 @@ Route::prefix('shopping_cart')->namespace('Cart')->group(function () {
 });
 
 
+
+/** ADMIN */
 Route::prefix('admin')->namespace('Admin')->group(function () {
     /** Products */
-    Route::get('/products', 'ProductController@index')->name('product.index');
-    Route::get('/products/create', 'ProductController@create')->name('product.create');
-    Route::post('/products/create', 'ProductController@store')->name('product.store');
-    Route::get('/products/{id}/edit', 'ProductController@edit')->name('product.edit');
-    Route::put('/products/{id}/update', 'ProductController@update')->name('product.update');
+    Route::resource('/products', 'ProductController')->names([
+        'index' => 'product.index',
+        'create' => 'product.create',
+        'store' => 'product.store',
+        'edit' => 'product.edit',
+        'update' => 'product.update',
+        'destroy' => 'product.destroy'
+    ]);
     /** endProducts */
 
     /** Categories */
@@ -107,6 +110,8 @@ Route::prefix('admin')->namespace('Admin')->group(function () {
 
 
     /** SubCategories */
+    
+
     Route::get('/subcategories/create', 'SubcategoryController@create')->name('subcategory.create');
     Route::post('/subcategories/create', 'SubcategoryController@store')->name('subcategory.store');
     Route::get('/subcategories/{id}', 'SubcategoryController@show')->name('subcategory.show');
@@ -130,4 +135,13 @@ Route::prefix('admin')->namespace('Admin')->group(function () {
     /** Supplier */
     Route::resource('/suppliers', 'SupplierController');
     /** endsupplier */
+
+    /** ProductCombination */
+    Route::resource('/combinations', 'ProductCombinationController')->only(['store','update','destroy']);
+    /** ProductCombination */
+    
+    Route::resource('/group-combinations-images', 'GroupCombinationImagesController')->only(['store', 'show' ,'update']);
+
+
+
 });

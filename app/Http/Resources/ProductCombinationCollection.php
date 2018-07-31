@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources;
 
+use App\Product;
+use App\GroupCombinationImages;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class ProductCombinationCollection extends ResourceCollection
@@ -19,20 +21,19 @@ class ProductCombinationCollection extends ResourceCollection
                 $combination_string = $element->combination;
                 $combination_decode = json_decode($combination_string);
                 $combination = "Color: ". $combination_decode->color.", ".$combination_decode->key.": ".$combination_decode->value;
-                $images =  $element->images;
-                $images_replace_1 = str_replace('[', '', $images);
-                $images_replace_2 = str_replace(']', '', $images_replace_1);
-                $images_replace_3 = str_replace('"', '', $images_replace_2);
-                $images_array = explode(',', $images_replace_3);
+                $group_combination = GroupCombinationImages::where('group_combination_id', $element->group_combination_id)->get();
                 return [
                     'id' => $element->id,
                     'combination' => $combination,
                     'stock' => $element->stock,
                     'reference' => $element->reference,
                     'price' => $element->price,
+                    'price_tax' => $element->price_tax,
                     'humanPrice' => "$ ".number_format($element->price),
+                    'humanPriceTax' => "$ ".number_format($element->price_tax),
                     'discount' => $element->discount,
-                    'image' => $images_array[0]
+                    'group_combination' => $group_combination
+                    
                 ];
             }),
         ];

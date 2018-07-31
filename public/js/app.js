@@ -51180,10 +51180,6 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(96)
-}
 var normalizeComponent = __webpack_require__(0)
 /* script */
 var __vue_script__ = __webpack_require__(90)
@@ -51192,7 +51188,7 @@ var __vue_template__ = __webpack_require__(91)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
-var __vue_styles__ = injectStyle
+var __vue_styles__ = null
 /* scopeId */
 var __vue_scopeId__ = null
 /* moduleIdentifier (server only) */
@@ -51416,6 +51412,52 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "ProductCombinationComponent",
@@ -51423,6 +51465,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     return {
       attributes: [],
       validated: false,
+      validated_images: false,
       attribute_product: [],
       values: [],
       data: [],
@@ -51437,7 +51480,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         price: '',
         price_tax: '',
         discount: ''
-      }
+      },
+      group_combinations_color: [],
+      group_combinations_id: null
     };
   },
 
@@ -51452,6 +51497,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     /** Get Combinations  */
     this.getAllCombinations();
+
+    /** Get Group Combinations */
+    this.getGroupCombination();
   },
 
   methods: {
@@ -51471,22 +51519,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       var _this2 = this;
 
       var combinations = this.combinations;
-      axios.post('/admin/combinations/create', {
-
+      axios.post('/admin/combinations', {
         productId: this.productid,
         combinations: combinations,
         key_color: this.attribute_product.color,
-        images: JSON.stringify(this.images_selected)
-
+        images: this.images_selected
       }).then(function (response) {
         if (response.data.response == 'Error') {
           $.notify({ message: 'Esta combinación ya existe' }, { type: 'danger' });
         } else {
           $.notify({ message: 'Combinación creada con éxito' }, { type: 'success' });
+
           _this2.combinations = [];
           _this2.data = [];
           _this2.attribute_product.color = [];
           _this2.images_selected = [];
+          _this2.validated = false;
+
           setTimeout(function () {
             _this2.getAllCombinations();
           }, 2000);
@@ -51502,7 +51551,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       axios.get('/api/product/' + this.productid + '/combinations').then(function (response) {
         _this3.product_combinations = response.data.combinations.data;
         _this3.product_images = response.data.images;
-        console.log(_this3.product_combinations);
       });
     },
     editCombination: function editCombination(combination) {
@@ -51512,6 +51560,63 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.combination_edit.price = combination.price;
       this.combination_edit.price_tax = 0;
       this.combination_edit.discount = 0;
+    },
+    updateCombination: function updateCombination() {
+      var _this4 = this;
+
+      var price = this.combination_edit.price;
+      var price_tax = this.combination_edit.price_tax;
+      var discount = this.combination_edit.discount;
+      var price_total = 0;
+
+      price_total = price - price * discount / 100;
+
+      if (price_tax != 0) {
+        price_total = price_total * price_tax;
+      }
+
+      axios.put('/admin/combinations/' + this.combination_edit.id, {
+        id: this.combination_edit.id,
+        reference: this.combination_edit.reference,
+        stock: this.combination_edit.stock,
+        price: this.combination_edit.price,
+        price_tax: price_total,
+        discount: this.combination_edit.discount
+      }).then(function (response) {
+        $.notify({ message: 'Combinación editada con éxito' }, { type: 'success' });
+        _this4.getAllCombinations();
+      }).catch(function (errors) {
+        $.notify({ message: errors.response.data.errors.reference[0] }, { type: 'danger' });
+      });
+    },
+    getGroupCombination: function getGroupCombination() {
+      var _this5 = this;
+
+      this.validated_images = true;
+      axios.get('/api/group-combinations/' + this.productid).then(function (response) {
+        _this5.group_combinations_color = response.data.group_combinations;
+      });
+    },
+    saveImagesCombination: function saveImagesCombination(group_combinations_id) {
+      if (this.images_selected.length == 0) return $.notify({ message: 'Debes seleccionar al menos una imagen' }, { type: 'danger' });
+
+      if (group_combinations_id == null) return $.notify({ message: 'Debes seleccionar al menos un grupo de color' }, { type: 'danger' });
+
+      axios.post('/admin/group-combinations-images', {
+        _images: this.images_selected,
+        _group_combination_id: group_combinations_id
+      }).then(function (response) {
+        $.notify({ message: 'Combinación editada con éxito' }, { type: 'success' });
+      }).catch(function (errors) {
+        $.notify({ message: errors.response.data.errors._images[0] }, { type: 'danger' });
+      });
+    },
+    fillGroupCombinationsImages: function fillGroupCombinationsImages() {
+      var _this6 = this;
+
+      axios.get('/admin/group-combinations-images/' + this.group_combinations_id).then(function (response) {
+        _this6.images_selected = response.data.images;
+      });
     }
   }
 });
@@ -51602,85 +51707,6 @@ var render = function() {
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "card" }, [
-              _c("div", { staticClass: "card-header" }, [
-                _vm._v("Selecciona la imagenes para esta combinación")
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "card-body" }, [
-                _c(
-                  "div",
-                  { staticClass: "row" },
-                  _vm._l(_vm.product_images, function(image, index) {
-                    return _c(
-                      "div",
-                      {
-                        key: index,
-                        staticClass: "col-xs-12 col-sm-3 col-md-2 text-center"
-                      },
-                      [
-                        _c("label", { staticClass: "btn btn-default" }, [
-                          _c("img", {
-                            staticClass: "img-check",
-                            attrs: {
-                              src: "/images/products/" + image.url,
-                              width: "80"
-                            }
-                          }),
-                          _vm._v(" "),
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.images_selected,
-                                expression: "images_selected"
-                              }
-                            ],
-                            staticClass: "hidden",
-                            attrs: {
-                              disabled: _vm.validated ? false : true,
-                              type: "checkbox",
-                              id: "item4",
-                              autocomplete: "off"
-                            },
-                            domProps: {
-                              value: image.url,
-                              checked: Array.isArray(_vm.images_selected)
-                                ? _vm._i(_vm.images_selected, image.url) > -1
-                                : _vm.images_selected
-                            },
-                            on: {
-                              change: function($event) {
-                                var $$a = _vm.images_selected,
-                                  $$el = $event.target,
-                                  $$c = $$el.checked ? true : false
-                                if (Array.isArray($$a)) {
-                                  var $$v = image.url,
-                                    $$i = _vm._i($$a, $$v)
-                                  if ($$el.checked) {
-                                    $$i < 0 &&
-                                      (_vm.images_selected = $$a.concat([$$v]))
-                                  } else {
-                                    $$i > -1 &&
-                                      (_vm.images_selected = $$a
-                                        .slice(0, $$i)
-                                        .concat($$a.slice($$i + 1)))
-                                  }
-                                } else {
-                                  _vm.images_selected = $$c
-                                }
-                              }
-                            }
-                          })
-                        ])
-                      ]
-                    )
-                  })
-                )
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "card" }, [
               _c("div", { staticClass: "card-body" }, [
                 _c("div", { staticClass: "col-xs-12 col-sm-12 " }, [
                   _c(
@@ -51719,21 +51745,23 @@ var render = function() {
                   return _c("tr", { key: index }, [
                     _c("td", [_vm._v(_vm._s(index + 1))]),
                     _vm._v(" "),
-                    _c("td", { staticClass: "text-center" }, [
-                      _c("img", {
-                        attrs: {
-                          src: "/images/products/" + combination.image,
-                          width: "40",
-                          alt: ""
-                        }
-                      })
-                    ]),
-                    _vm._v(" "),
                     _c("td", [_vm._v(_vm._s(combination.combination))]),
                     _vm._v(" "),
                     _c("td", [_vm._v(_vm._s(combination.stock))]),
                     _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(combination.reference))]),
+                    _vm._v(" "),
                     _c("td", [_vm._v(_vm._s(combination.humanPrice))]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _vm._v(
+                        _vm._s(
+                          combination.price_tax != 0
+                            ? combination.humanPriceTax
+                            : combination.humanPrice
+                        )
+                      )
+                    ]),
                     _vm._v(" "),
                     _c("td", { staticClass: "text-center" }, [
                       _c("i", {
@@ -51778,6 +51806,8 @@ var render = function() {
                       _vm._m(3),
                       _vm._v(" "),
                       _c("div", { staticClass: "modal-body" }, [
+                        _vm._m(4),
+                        _vm._v(" "),
                         _c("div", { staticClass: "card" }, [
                           _c("div", { staticClass: "card-header" }, [
                             _vm._v(
@@ -51988,19 +52018,221 @@ var render = function() {
                         ])
                       ]),
                       _vm._v(" "),
-                      _vm._m(4)
+                      _c("div", { staticClass: "modal-footer" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-secondary",
+                            attrs: { type: "button", "data-dismiss": "modal" }
+                          },
+                          [_vm._v("Cancelar")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-primary",
+                            attrs: { type: "button" },
+                            on: {
+                              click: function($event) {
+                                _vm.updateCombination()
+                              }
+                            }
+                          },
+                          [_vm._v("Guardar cambios")]
+                        )
+                      ])
                     ])
                   ]
                 )
               ]
             )
           ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "card" }, [
+          _c("div", { staticClass: "card-header" }, [
+            _vm._v("Selecciona la imagenes para cada grupo de combinaciónes")
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "card-body" }, [
+            _vm._m(5),
+            _vm._v(" "),
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-xs-12 col-sm-12" }, [
+                _c("div", { staticClass: "card" }, [
+                  _c("div", { staticClass: "card-body" }, [
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("label", [_vm._v("Selecciona un grupo de colores")]),
+                      _vm._v(" "),
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.group_combinations_id,
+                              expression: "group_combinations_id"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: { name: "", id: "" },
+                          on: {
+                            change: [
+                              function($event) {
+                                var $$selectedVal = Array.prototype.filter
+                                  .call($event.target.options, function(o) {
+                                    return o.selected
+                                  })
+                                  .map(function(o) {
+                                    var val = "_value" in o ? o._value : o.value
+                                    return val
+                                  })
+                                _vm.group_combinations_id = $event.target
+                                  .multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
+                              },
+                              function($event) {
+                                _vm.fillGroupCombinationsImages()
+                              }
+                            ]
+                          }
+                        },
+                        _vm._l(_vm.group_combinations_color, function(
+                          group_combination,
+                          index
+                        ) {
+                          return _c(
+                            "option",
+                            {
+                              key: index,
+                              domProps: { value: group_combination.id }
+                            },
+                            [_vm._v(_vm._s(group_combination.color))]
+                          )
+                        })
+                      )
+                    ])
+                  ])
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "card" }, [
+              _c("div", { staticClass: "card-body" }, [
+                _c(
+                  "div",
+                  { staticClass: "row" },
+                  _vm._l(_vm.product_images, function(image, index) {
+                    return _c(
+                      "div",
+                      {
+                        key: index,
+                        staticClass: "col-xs-12 col-sm-3 col-md-2 text-center"
+                      },
+                      [
+                        _c("label", { staticClass: "btn btn-default" }, [
+                          _c("img", {
+                            staticClass: "img-check",
+                            attrs: {
+                              src: "/images/products/" + image.url,
+                              width: "80"
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.images_selected,
+                                expression: "images_selected"
+                              }
+                            ],
+                            staticClass: "hidden",
+                            attrs: {
+                              type: "checkbox",
+                              disabled: _vm.validated_images ? false : true,
+                              id: "item4",
+                              autocomplete: "off"
+                            },
+                            domProps: {
+                              value: image.url,
+                              checked: Array.isArray(_vm.images_selected)
+                                ? _vm._i(_vm.images_selected, image.url) > -1
+                                : _vm.images_selected
+                            },
+                            on: {
+                              change: function($event) {
+                                var $$a = _vm.images_selected,
+                                  $$el = $event.target,
+                                  $$c = $$el.checked ? true : false
+                                if (Array.isArray($$a)) {
+                                  var $$v = image.url,
+                                    $$i = _vm._i($$a, $$v)
+                                  if ($$el.checked) {
+                                    $$i < 0 &&
+                                      (_vm.images_selected = $$a.concat([$$v]))
+                                  } else {
+                                    $$i > -1 &&
+                                      (_vm.images_selected = $$a
+                                        .slice(0, $$i)
+                                        .concat($$a.slice($$i + 1)))
+                                  }
+                                } else {
+                                  _vm.images_selected = $$c
+                                }
+                              }
+                            }
+                          })
+                        ])
+                      ]
+                    )
+                  })
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-xs-12 col-sm-12" }, [
+                _c("div", { staticClass: "card" }, [
+                  _c("div", { staticClass: "card-body" }, [
+                    _c("div", { staticClass: "form-group" }, [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-info pull-right",
+                          attrs: {
+                            type: "button",
+                            disabled: _vm.validated_images ? false : true
+                          },
+                          on: {
+                            click: function($event) {
+                              _vm.saveImagesCombination(
+                                _vm.group_combinations_id
+                              )
+                            }
+                          }
+                        },
+                        [
+                          _c("i", { staticClass: "fa fa-save" }),
+                          _vm._v(" Guardar combinación")
+                        ]
+                      )
+                    ])
+                  ])
+                ])
+              ])
+            ])
+          ])
         ])
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "col-xs-12 col-sm-4" }, [
         _c("div", { staticClass: "card card-default" }, [
-          _vm._m(5),
+          _vm._m(6),
           _vm._v(" "),
           _c(
             "div",
@@ -52211,8 +52443,12 @@ var staticRenderFns = [
     return _c("div", { staticClass: "callout callout-info" }, [
       _c("p", [
         _c("b", [
+          _c("i", {
+            staticClass: "fa fa-info-circle",
+            staticStyle: { color: "#117A8B" }
+          }),
           _vm._v(
-            "Para crear los atributos y valores puedes ir menú y seleccionar "
+            " Para crear los atributos y valores puedes ir menú y seleccionar "
           ),
           _c(
             "a",
@@ -52243,8 +52479,6 @@ var staticRenderFns = [
     return _c("thead", [
       _c("th", { staticStyle: { "font-size": "11pt" } }, [_vm._v("ID")]),
       _vm._v(" "),
-      _c("th", { staticStyle: { "font-size": "11pt" } }, [_vm._v("Imagen")]),
-      _vm._v(" "),
       _c("th", { staticStyle: { "font-size": "11pt" } }, [
         _vm._v("Combinación")
       ]),
@@ -52252,7 +52486,15 @@ var staticRenderFns = [
       _c("th", { staticStyle: { "font-size": "11pt" } }, [_vm._v("Cantidad")]),
       _vm._v(" "),
       _c("th", { staticStyle: { "font-size": "11pt" } }, [
-        _vm._v("Precio final")
+        _vm._v("Referencia")
+      ]),
+      _vm._v(" "),
+      _c("th", { staticStyle: { "font-size": "11pt" } }, [
+        _vm._v("Precio Base")
+      ]),
+      _vm._v(" "),
+      _c("th", { staticStyle: { "font-size": "11pt" } }, [
+        _vm._v("Impacto en el precio")
       ]),
       _vm._v(" "),
       _c("th", { staticStyle: { "font-size": "11pt" } }, [_vm._v("Editar")]),
@@ -52300,21 +52542,43 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-footer" }, [
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-secondary",
-          attrs: { type: "button", "data-dismiss": "modal" }
-        },
-        [_vm._v("Close")]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        { staticClass: "btn btn-primary", attrs: { type: "button" } },
-        [_vm._v("Save changes")]
-      )
+    return _c("div", { staticClass: "callout callout-info" }, [
+      _c("p", [
+        _c("i", {
+          staticClass: "fa fa-info-circle",
+          staticStyle: { color: "#117A8B" }
+        }),
+        _vm._v("\n                          El campo "),
+        _c("b", [_vm._v("Referencia")]),
+        _vm._v(
+          ' puede quedar vacio, este campo se usa si determinada prenda en el color "Rojo" por ejemplo tiene\n                          una referencia distinta.\n                          '
+        ),
+        _c("br"),
+        _vm._v("\n                          El campo "),
+        _c("b", [_vm._v("Precio")]),
+        _vm._v(
+          " se usa si una combinación en particular es más barata o cara, puedes dejar este campo vacio\n                          ya que tomara el precio base del producto que se especifico a la hora de crear el producto. \n                      "
+        )
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "callout callout-info" }, [
+      _c("p", [
+        _c("i", {
+          staticClass: "fa fa-info-circle",
+          staticStyle: { color: "#117A8B" }
+        }),
+        _vm._v(
+          " Antes de poder seleccionar las imagenes es necesario crear al menos una combinación, una vez \n                hayas creado, puedes seleccionar "
+        ),
+        _c("b", [_vm._v("un grupo de colores")]),
+        _vm._v(" y añadir sus respectivas imagenes, una vez hecho esto pulsa "),
+        _c("b", [_vm._v("Guardar combinación")])
+      ])
     ])
   },
   function() {
@@ -52340,49 +52604,6 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 93 */,
-/* 94 */,
-/* 95 */,
-/* 96 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(97);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(4)("76a5c720", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-69af3988\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ProductCombinationComponent.vue", function() {
-     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-69af3988\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ProductCombinationComponent.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 97 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(3)(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
-
-// exports
-
 
 /***/ })
 /******/ ]);

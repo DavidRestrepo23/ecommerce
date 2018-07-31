@@ -10,7 +10,11 @@ use App\Http\Requests\SubCategoryStoreRequest;
 use App\Http\Requests\SubCategoryUpdateRequest;
 
 class SubcategoryController extends Controller
-{
+{   
+
+    public function __construct(){
+        $this->middleware('dashboard');
+    }
     /**
      * Show the form for creating a new resource.
      *

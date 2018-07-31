@@ -74,6 +74,10 @@ class Product extends Model
         return $this->hasMany(ProductCombination::class);
     }
 
+    public function group_combination(){
+        return $this->hasMany(GroupCombination::class);
+    }
+
 
     //Accessors
     public function getFirstImageAttribute()
