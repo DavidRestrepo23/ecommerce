@@ -33,7 +33,7 @@
                     <td class="text-center"><img src="{{ $product->first_image->url }}" width="60px" alt=""></td>
                     <td><a href="">{{ $product->title }}</a></td>
                     <td>{{ $product->reference }}</td>
-                    <td>{{ $product->category->name }}</td>
+                    <td>{{ $product->if_exist_category }}</td>
                     <td><span class="badge badge-dark">{{ $product->stock }} </span></td>
                     <td> <b>$ {{ number_format($product->price) }} / $ {{ number_format($product->price_tax_include) }}</b> </td>
                     <td>{{ $product->status }}</td>

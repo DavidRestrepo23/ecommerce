@@ -24,22 +24,6 @@ class ApiController extends Controller
 
 
     /**
-     * Get price Specifcs on product
-     * @param  int  $id
-     */
-    public function product_prices($id)
-    {
-        $product = Product::with('price_specifics')->find($id);
-        $prices = $product->price_specifics()->with('group')->get();
-        $groupsUser = GroupUser::all();
-        $priceCollection = new PriceSpecificCollection($prices);
-        return response()->json([
-            'prices' => $priceCollection->collection,
-            'groups' => $groupsUser
-        ]);
-    }
-
-    /**
      * Destroy file product images
      * @param  int  $id
      */
@@ -50,32 +34,5 @@ class ApiController extends Controller
             'response' => 'Imagen Eliminada'
         ]);
     }
-
-
-    /**
-     * Update price specifics product
-     * 
-     * @param  int  $id
-     */
-    public function update_price_specifics(Request $request, $id)
-    {
-        $price_specific = PriceSpecific::find($id);
-        $price_discount = ($request->price * $request->discount) / 100;
-        $price = $request->price - $price_discount;
-        $tax = $request->tax;
-        $price_tax = $price * $tax;
-        if ($price_tax === 0) {
-            $price_tax = $price;
-        }
-
-        $price_specific->fill(['price' => $price, 'price_tax' => $price, 'discount' => $request->discount])->save();
-
-        return response()->json([
-            'response' => $price
-        ]);
-    }
-
-
-
 
 }

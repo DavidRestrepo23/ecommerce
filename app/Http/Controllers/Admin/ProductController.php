@@ -74,48 +74,47 @@ class ProductController extends Controller
                 $status = '1';
             }
         
-        $product = Product::create([
-            'title' => $request->title,
-            'slug' => str_slug($request->title),
-            'reference' => $request->reference,
-            'price' => $request->price,
-            'price_tax' => $price_tax,
-            'summary' => $request->summary,
-            'description' => $request->description,
-            'status' => $status,
-            'stock' => $request->stock,
-            'meta_keywords' => $request->meta_keywords,
-            'meta_description' => $request->meta_description,
-            'category_id' => $request->category_id,
-            'supplier_id' => $request->supplier_id,
-        ]);
-
-        $images = $request->file('images');
-        $path = 'images/products';
-        foreach($images as $image){
-            $filename = uniqid().$image->getClientOriginalName();
-            $upload_success = $image->move($path,$filename);
-            ProductImage::create([
-                'name' => $request->title,
-                'url' => $filename,
-                'product_id' => $product->id
-            ]);
-        }
-
+                $product = Product::create([
+                    'title' => $request->title,
+                    'slug' => str_slug($request->title),
+                    'reference' => $request->reference,
+                    'price' => $request->price,
+                    'price_tax' => $price_tax,
+                    'summary' => $request->summary,
+                    'description' => $request->description,
+                    'status' => $status,
+                    'stock' => $request->stock,
+                    'meta_keywords' => $request->meta_keywords,
+                    'meta_description' => $request->meta_description,
+                    'category_id' => $request->category_id,
+                    'supplier_id' => $request->supplier_id,
+                ]);
+        
+            if($request->file('images')){
+                $images = $request->file('images');
+                $path = 'images/products';
+                foreach($images as $image){
+                    $filename = uniqid().$image->getClientOriginalName();
+                    $upload_success = $image->move($path,$filename);
+                    ProductImage::create([
+                        'name' => $request->title,
+                        'url' => $filename,
+                        'product_id' => $product->id
+                    ]);
+                }
+            }
+        
+        if($request->subcategory_id){
             $product->sub_categories()->attach($request->get('subcategory_id'));
-            
+        }
+        
+        if($request->feature_detail_id){
             $product->feature_details()->attach($request->get('feature_detail_id'));
+        }
             
-            PriceSpecific::create([
-                'price' => $request->price_specific,
-                'price_tax' => $request->price_specific * $request->rate_specific,
-                'discount' => $request->discount,
-                'product_id' => $product->id,
-                'group_id' => $request->group_id,
-            ]);
             
-            $success = true;       
-
+        $success = true;       
+                 
         }catch(\Exception $ex){
             DB::rollBack();
             $success = $ex->getMessage();
@@ -148,7 +147,7 @@ class ProductController extends Controller
         $product = Product::with('category', 'images', 'sub_categories', 'price_specifics', 'feature_details')->find($id);
         $categories = Category::where('status', 1)->get();
         $suppliers = Supplier::pluck('companyName', 'id');
-        $group_user = GroupUser::pluck('name', 'id');
+        $group_user = GroupUser::all();
         $features =  Feature::all();
         if(!$product)
             abort(404);
@@ -165,7 +164,7 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        
     }
 
     /**
@@ -179,3 +178,20 @@ class ProductController extends Controller
         //
     }
 }
+
+
+
+
+// if($request->price_specific){
+//     $price_total = ($request->price_specific - ($request->price_specific * $request->discount) / 100);
+//     if($request->rate_specific != 0){
+//         $price_total = $price_total * $request->rate_specific;
+//     }
+//     PriceSpecific::create([
+//         'price' => $request->price_specific,
+//         'price_tax' => $price_total,
+//         'discount' => $request->discount,
+//         'product_id' => $product->id,
+//         'group_id' => $request->group_id,
+//     ]);
+// }

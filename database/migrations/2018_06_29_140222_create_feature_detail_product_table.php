@@ -15,8 +15,8 @@ class CreateFeatureDetailProductTable extends Migration
     {
         Schema::create('feature_detail_product', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('feature_detail_id')->unsigned();
-            $table->integer('product_id')->unsigned();
+            $table->integer('feature_detail_id')->unsigned()->nullable();
+            $table->integer('product_id')->unsigned()->nullable();
             $table->timestamps();
 
             //Relations

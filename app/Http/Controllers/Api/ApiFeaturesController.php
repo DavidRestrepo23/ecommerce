@@ -17,9 +17,9 @@ class ApiFeaturesController extends Controller
      */
     public function features()
     {
-        $features = Feature::with('feature_details')->get();
+        $feature_details = FeatureDetail::all();
         return response()->json([
-            'features' => $features
+            'details' => $feature_details,
         ]);
     }
 
@@ -31,7 +31,7 @@ class ApiFeaturesController extends Controller
     public function feature_details($id)
     {
         $product = Product::find($id);
-        $feature_details = $product->feature_details()->get()->pluck('id');
+        $feature_details = $product->feature_details()->get();
 
         return response()->json([
             'feature_details' => $feature_details

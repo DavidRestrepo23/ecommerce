@@ -138,10 +138,11 @@ Route::prefix('admin')->namespace('Admin')->group(function () {
 
     /** ProductCombination */
     Route::resource('/combinations', 'ProductCombinationController')->only(['store','update','destroy']);
+    Route::resource('/group-combinations-images', 'GroupCombinationImagesController')->only(['store', 'show' ,'update']);
     /** ProductCombination */
     
-    Route::resource('/group-combinations-images', 'GroupCombinationImagesController')->only(['store', 'show' ,'update']);
-
+    
+    Route::resource('/prices', 'PriceSpecificController')->only(['store', 'show' ,'update', 'destroy']);
 
 
 });

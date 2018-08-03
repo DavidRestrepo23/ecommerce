@@ -15,13 +15,13 @@ class CreatePriceSpecificsTable extends Migration
     {
         Schema::create('price_specifics', function (Blueprint $table) {
             $table->increments('id');
-            $table->double('price');
-            $table->double('price_tax');
+            $table->double('price')->nullable();
+            $table->double('price_tax')->nullable();
             $table->double('discount')->nullable();
+            $table->integer('product_id')->unsigned()->nullable();
             $table->timestamps();
 
             //Relation
-            $table->integer('product_id')->unsigned();
             $table->foreign('product_id')->references('id')->on('products');
 
         });

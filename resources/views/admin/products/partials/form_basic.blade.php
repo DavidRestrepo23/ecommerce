@@ -50,17 +50,12 @@
     </div>
 </div>
    
-<div class="card card-default">
-    <div class="card-header"> <i class="fa fa-list"></i> Características y valores </div>
-    <div class="card-body"> 
-        @if($product)
-            <select-features :productid="{{ $product->id }}"></select-features>   
-        @else
-            <select-features></select-features>   
-        @endif
-    </div>
-    <br>
-</div>
+@if($product)
+    <feature-products-component :productid="{{ $product->id }}"></feature-products-component>
+@else
+    <feature-products-component></feature-products-component>
+@endif
+
 
 
 

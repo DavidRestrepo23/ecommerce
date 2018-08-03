@@ -94,4 +94,12 @@ class Product extends Model
         return $this->price_tax;
     }
 
+
+    public function getIfExistCategoryAttribute(){
+        if($this->category)
+            return $this->category->name;
+
+        return 'Sin categoría';
+    }
+
 }

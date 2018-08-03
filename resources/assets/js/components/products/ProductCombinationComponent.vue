@@ -302,7 +302,7 @@ export default {
             
           setTimeout(()=>{
             this.getAllCombinations();
-            
+            this.getGroupCombination();
           },2000)
         }
       }).catch(error => {
@@ -347,6 +347,7 @@ export default {
       }).then(response=>{
           $.notify({message: 'Combinación editada con éxito'},{type: 'success'});
           this.getAllCombinations();
+          
       }).catch(errors => {
         $.notify({message: errors.response.data.errors.reference[0]},{type: 'danger'});
       })

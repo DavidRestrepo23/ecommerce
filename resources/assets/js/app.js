@@ -6,7 +6,11 @@
 
 require('./bootstrap');
 
+
+
 window.Vue = require('vue');
+
+
 
 window.axios = require('axios');
 window.axios.defaults.headers.common = {
@@ -15,6 +19,7 @@ window.axios.defaults.headers.common = {
     'X-Requested-With': 'XMLHttpRequest',
     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
 };
+
 
 
 const Vuex = require('vuex');
@@ -49,14 +54,12 @@ Vue.component('products-in-cart-component', require('./components/cart/ProductsI
 Vue.component('change-status-category-component', require('./components/category/StatusComponent.vue'));
 Vue.component('change-status-subcategory-component', require('./components/subcategory/StatusComponent.vue'));
 Vue.component('select-countries', require('./components/custom/CountryComponent.vue'));
-Vue.component('select-features', require('./components/products/FeaturesComponent.vue'));
-Vue.component('price-specifics', require('./components/products/PriceSpeceficComponent.vue'));
+Vue.component('feature-products-component', require('./components/products/FeatureProductsComponent.vue'));
+Vue.component('price-specifics-component', require('./components/products/PriceSpeceficComponent.vue'));
 Vue.component('category-edit-component', require('./components/products/CategoryEditComponent.vue'));
 Vue.component('category-create-component', require('./components/products/CategoryCreateComponent.vue'));
 Vue.component('display-product-combination-component', require('./components/products/DisplayProductCombination.vue'));
 Vue.component('product-combination-component', require('./components/products/ProductCombinationComponent.vue'));
-
-
 
 
 const app = new Vue({

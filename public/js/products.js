@@ -55,7 +55,9 @@ $("#form-product").on('submit', function(event) {
         },
         success: function(data) {
             $.notify({ message: data.response }, { type: 'success' });
-
+            setTimeout(()=>{
+                window.location.href=`/admin/products/${data.product_id}/edit`;
+            },3000);
         },
         error: function(data) {
             if (data.status == 422) {
@@ -67,7 +69,6 @@ $("#form-product").on('submit', function(event) {
                     $('.alert-danger').show();
                     $('.errors').append(value + "<br>");
                     $('html,body').scrollTop(0);
-
                 });
             }
         }
