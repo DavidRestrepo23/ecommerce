@@ -17,10 +17,12 @@ class CreatePromotionsTable extends Migration
             $table->increments('id');
             $table->float('price');
             $table->float('discount');
-            $table->timestamps();
-
-            //Relation
             $table->integer('product_id')->unsigned();
+            $table->timestamps();
+            $table->dateTime('ends_at');
+            $table->dateTime('start_at');
+            //Relation
+            
             $table->foreign('product_id')->references('id')->on('products');
         });
     }

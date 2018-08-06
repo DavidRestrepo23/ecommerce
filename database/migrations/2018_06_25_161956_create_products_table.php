@@ -22,7 +22,7 @@ class CreateProductsTable extends Migration
             $table->double('price_tax')->default(0)->nullable();
             $table->text('summary')->nullable();
             $table->text('description')->nullable();
-            $table->enum('status', [1,0])->default(1);
+            $table->string('status')->default(1);
             $table->integer('stock')->default(0)->nullable();
             $table->text('meta_keywords')->nullable();
             $table->text('meta_description')->nullable();

@@ -1,0 +1,1 @@
+<promotion-one-product-component :price-base="{{ $product->price }}" :product-id="{{ $product->id }}"></promotion-one-product-component>

@@ -60,6 +60,8 @@ Vue.component('category-edit-component', require('./components/products/Category
 Vue.component('category-create-component', require('./components/products/CategoryCreateComponent.vue'));
 Vue.component('display-product-combination-component', require('./components/products/DisplayProductCombination.vue'));
 Vue.component('product-combination-component', require('./components/products/ProductCombinationComponent.vue'));
+Vue.component('product-status-component', require('./components/products/StatusComponent.vue'));
+Vue.component('promotion-one-product-component', require('./components/products/PromotionComponent.vue'));
 
 
 const app = new Vue({

@@ -12,6 +12,7 @@ use App\PriceSpecific;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductsStoreRequest;
+use App\Http\Requests\ProductsUpdateRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
@@ -162,9 +163,89 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        
+    public function update(ProductsUpdateRequest $request, $id)
+    {   
+    
+        if($request->ajax()){
+
+            try{
+                DB::beginTransaction();
+
+                $product = Product::find($id);
+                
+                if($request->rate != null){
+                    $tax = $request->rate;
+                    $price_tax = $request->price * $tax;
+                }else{
+                    $price_tax = $request->price_tax;
+                }
+              
+                if($request->status == null){
+                    $status = '0';
+                }else{
+                    $status = '1';
+                }   
+                
+                $product->fill([
+                    'title' => $request->title,
+                    'slug' => str_slug($request->title),
+                    'reference' => $request->reference,
+                    'price' => $request->price,
+                    'price_tax' => $price_tax,
+                    'summary' => $request->summary,
+                    'description' => $request->description,
+                    'status' => $status,
+                    'stock' => $request->stock,
+                    'meta_keywords' => $request->meta_keywords,
+                    'meta_description' => $request->meta_description,
+                    'category_id' => $request->category_id,
+                    'supplier_id' => $request->supplier_id,
+                ])->save();
+                
+                if($request->file('images')){
+                    $images = $request->file('images');
+                    $path = 'images/products';
+                    foreach($images as $image){
+                        $filename = uniqid().$image->getClientOriginalName();
+                        $upload_success = $image->move($path,$filename);
+                        ProductImage::create([
+                            'name' => $request->title,
+                            'url' => $filename,
+                            'product_id' => $product->id
+                        ]);
+                    }
+                }
+
+                if($request->subcategory_id)
+                    $product->sub_categories()->sync($request->get('subcategory_id'));
+                
+                
+                if($request->feature_detail_id)
+                    $product->feature_details()->sync($request->get('feature_detail_id'));
+                
+                    $success = true;       
+                
+            }catch(\Exception $ex){
+                DB::rollBack();
+                $success = $ex->getMessage();
+                return response()->json([
+                    'error' => $success,
+                ]);
+            }
+
+
+            if($success === true){
+                DB::commit();
+                return response()->json([
+                    'response' => 'Producto editado con éxito',
+                    'product_id' => $product->id
+                ]); 
+            }
+
+
+        }
+
+        abort(401);
     }
 
     /**
@@ -180,18 +261,3 @@ class ProductController extends Controller
 }
 
 
-
-
-// if($request->price_specific){
-//     $price_total = ($request->price_specific - ($request->price_specific * $request->discount) / 100);
-//     if($request->rate_specific != 0){
-//         $price_total = $price_total * $request->rate_specific;
-//     }
-//     PriceSpecific::create([
-//         'price' => $request->price_specific,
-//         'price_tax' => $price_total,
-//         'discount' => $request->discount,
-//         'product_id' => $product->id,
-//         'group_id' => $request->group_id,
-//     ]);
-// }

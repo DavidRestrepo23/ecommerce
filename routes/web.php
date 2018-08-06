@@ -35,11 +35,11 @@ Route::get('/cart', 'Cart\ShoppingCartController@show')->name('shopping_cart.sho
 Route::get('/api/cart/products', 'Cart\ShoppingCartController@productsInCart');
 
 Route::prefix('api')->namespace('Api')->group(function () {
-    Route::get('products', 'ApiController@products');
-    Route::get('products/{id}/prices', 'ApiController@product_prices');
-    Route::get('productImages/{id}', 'ApiController@product_images');
-    Route::post('product-image/{id}/delete', 'ApiController@destroy_product_images');
-    Route::put('update/{id}/product-price-specifics/', 'ApiController@update_price_specifics');
+    
+    Route::get('products', 'ApiProductController@products');
+    Route::post('product-image/{id}/delete', 'ApiProductController@destroy_product_images');
+    Route::put('product/{id}/change-status', 'ApiProductController@update_status');
+    
 });
 
 /** API Feature */
@@ -141,8 +141,13 @@ Route::prefix('admin')->namespace('Admin')->group(function () {
     Route::resource('/group-combinations-images', 'GroupCombinationImagesController')->only(['store', 'show' ,'update']);
     /** ProductCombination */
     
-    
+    /** PricesSpecifics */
     Route::resource('/prices', 'PriceSpecificController')->only(['store', 'show' ,'update', 'destroy']);
+    /** PricesSpecifics */
 
+
+    /** ProductPromotion */
+    Route::resource('/promotions', 'PromotionController');
+    /** ProductPromotion */
 
 });

@@ -12,7 +12,7 @@ use App\GroupUser;
 use App\PriceSpecific;
 
 
-class ApiController extends Controller
+class ApiProductController extends Controller
 {
     public function products()
     {
@@ -32,6 +32,18 @@ class ApiController extends Controller
         ProductImage::destroy($id);
         return response()->json([
             'response' => 'Imagen Eliminada'
+        ]);
+    }
+
+    /**
+     * Update status product
+     * @param  int  $id
+     */
+    public function update_status(Request $request,$id){
+        $product = Product::find($id);
+        $product->fill(['status' => $request->status])->save();
+        return response()->json([
+            'response' => 'Producto editado con éxito',
         ]);
     }
 

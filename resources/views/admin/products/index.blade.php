@@ -30,13 +30,13 @@
                 @foreach($products as $key => $product)
                 <tr class="text-center">
                     <td>{{ $key+1 }}</td>
-                    <td class="text-center"><img src="{{ $product->first_image->url }}" width="60px" alt=""></td>
-                    <td><a href="">{{ $product->title }}</a></td>
+                    <td class="text-center"><img src="/images/products/{{ $product->first_image->url }}" width="60px" alt=""></td>
+                    <td><a href="{{ route('product.edit', $product->id) }}">{{ $product->title }}</a></td>
                     <td>{{ $product->reference }}</td>
                     <td>{{ $product->if_exist_category }}</td>
                     <td><span class="badge badge-dark">{{ $product->stock }} </span></td>
                     <td> <b>$ {{ number_format($product->price) }} / $ {{ number_format($product->price_tax_include) }}</b> </td>
-                    <td>{{ $product->status }}</td>
+                    <td><product-status-component :status="{{ $product->status }}" :productid="{{ $product->id }}"></product-status-component></td>
                     <td>
                         <div class="dropdown">
                             <a class="btn btn-warning dropdown-toggle" style="width: 100%;" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

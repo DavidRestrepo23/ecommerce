@@ -1,11 +1,14 @@
 @extends('layouts.admin')
-@section('page_title', 'Editar Producto ')
+@section('page_title')
+    <span class="text-uppercase"><b>{{ $product->title }}</b></span>
+@endsection
 @section('styles')
     <link href="{{asset('vendor/upload/css/fileinput.css')}}" media="all" rel="stylesheet" type="text/css" />
     <link href="{{ asset('vendor/summernote/summernote-bs4.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('vendor/adminlte/plugins/iCheck/all.css') }}">
     <link rel="stylesheet" href="{{ asset('css/switch.css') }}">
     <link rel="stylesheet" href="{{ asset('vendor/adminlte/plugins/select2/select2.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendor/adminlte/plugins/daterangepicker/daterangepicker-bs3.css') }}">
 @endsection
 @section('route')
 <a href="{{ route('product.index') }}" class="nav-link"><i class="fa fa-angle-double-left"></i> Volver atrás</a> 
@@ -25,14 +28,15 @@
             <div class="card-body">
                 <nav>
                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                        <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Ajustes básicos</a>
-                        <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Precios</a>
+                        <a class="nav-item nav-link" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Ajustes básicos</a>
+                        <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Precios especificos</a>
                         <a class="nav-item nav-link" id="nav-combination-tab" data-toggle="tab" href="#nav-combination" role="tab" aria-controls="nav-combination" aria-selected="false">Combinaciones</a>
                         <a class="nav-item nav-link" id="nav-seo-tab" data-toggle="tab" href="#nav-seo" role="tab" aria-controls="nav-seo" aria-selected="false">SEO</a>
+                        <a class="nav-item nav-link active" id="nav-promotion-tab" data-toggle="tab" href="#nav-promotion" role="tab" aria-controls="nav-promotion" aria-selected="false">Descuentos</a>
                     </div>
                 </nav>
                 <div class="tab-content" id="nav-tabContent">
-                    <div class="tab-pane fade show active " id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                    <div class="tab-pane fade " id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
                     <br>
                      <div class="row">
                          <div class="col-xs-12 col-sm-9">
@@ -51,6 +55,9 @@
                     </div>
                     <div class="tab-pane fade" id="nav-seo" role="tabpanel" aria-labelledby="nav-seo-tab">
                         @include('admin.products.partials.form_seo')
+                    </div>
+                    <div class="tab-pane fade  show active" id="nav-promotion" role="tabpanel" aria-labelledby="nav-promotion-tab">
+                        @include('admin.products.partials.form_promotion')
                     </div>
                 </div>
             </div>
@@ -90,13 +97,30 @@
     <script src="{{ asset('vendor/summernote/summernote-bs4.js') }}"></script>
     <script src="{{ asset('vendor/adminlte/plugins/iCheck/icheck.min.js') }}"></script>
     <script src="{{ asset('vendor/adminlte/plugins/select2/select2.min.js') }}"></script>
+    <script src="{{ asset('vendor/adminlte/plugins/daterangepicker/daterangepicker.js') }}"></script>
+    <script src="{{ asset('vendor/adminlte/plugins/daterangepicker/moment.js') }}"></script>
     <script src="{{ asset('js/products.js') }}"></script>
     <script>
-            $(document).ready(function(e){
+        $(document).ready(function(e){
     		$(".img-check").click(function(){
 				$(this).toggleClass("check");
 			});
-	});
+        });
+        $('#reservationtime').daterangepicker({
+            timePicker         : true,
+            timePickerIncrement: 30,
+            format             : 'YYYY-MM-DD H:mm:ss',
+            timePicker24Hour:false,
+            locale:{
+                "daysOfWeek": ["Dom", "Lun","Mar","Mie","Jue","Vie","Sab"],
+                "monthNames": ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio", "Agosto","Septiembre","Octubre","Noviembre","Diciembre"],
+                'applyLabel': 'Aplicar',
+                'cancelLabel': 'Cancelar',
+                'fromLabel':'Inicia',
+                'toLabel':'Finaliza'
+                
+            }
+        })
     </script>
     
 @endsection
