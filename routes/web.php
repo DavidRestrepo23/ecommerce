@@ -147,7 +147,7 @@ Route::prefix('admin')->namespace('Admin')->group(function () {
 
 
     /** ProductPromotion */
-    Route::resource('/promotions', 'PromotionController');
+    Route::resource('/promotions', 'PromotionController')->only(['store', 'show' ,'update','destroy']);
     /** ProductPromotion */
 
 });

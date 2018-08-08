@@ -14339,7 +14339,7 @@ module.exports = Component.exports
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(17);
-module.exports = __webpack_require__(100);
+module.exports = __webpack_require__(103);
 
 
 /***/ }),
@@ -14400,7 +14400,8 @@ Vue.component('category-create-component', __webpack_require__(84));
 Vue.component('display-product-combination-component', __webpack_require__(89));
 Vue.component('product-combination-component', __webpack_require__(92));
 Vue.component('product-status-component', __webpack_require__(95));
-Vue.component('promotion-one-product-component', __webpack_require__(104));
+
+Vue.component('promotion-create-product-component', __webpack_require__(118));
 
 var app = new Vue({
     el: '#app'
@@ -52836,24 +52837,38 @@ if (false) {
 }
 
 /***/ }),
-/* 100 */
+/* 100 */,
+/* 101 */,
+/* 102 */,
+/* 103 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 101 */,
-/* 102 */,
-/* 103 */,
-/* 104 */
+/* 104 */,
+/* 105 */,
+/* 106 */,
+/* 107 */,
+/* 108 */,
+/* 109 */,
+/* 110 */,
+/* 111 */,
+/* 112 */,
+/* 113 */,
+/* 114 */,
+/* 115 */,
+/* 116 */,
+/* 117 */,
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(105)
+var __vue_script__ = __webpack_require__(119)
 /* template */
-var __vue_template__ = __webpack_require__(106)
+var __vue_template__ = __webpack_require__(120)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -52870,7 +52885,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources\\assets\\js\\components\\products\\PromotionComponent.vue"
+Component.options.__file = "resources\\assets\\js\\components\\products\\PromotionCreateComponent.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -52879,9 +52894,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-34ef2cab", Component.options)
+    hotAPI.createRecord("data-v-21c0a6e2", Component.options)
   } else {
-    hotAPI.reload("data-v-34ef2cab", Component.options)
+    hotAPI.reload("data-v-21c0a6e2", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -52892,7 +52907,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 105 */
+/* 119 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -52996,36 +53011,89 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    data: function data() {
-        return {
-            validated: true
-        };
-    },
+  data: function data() {
+    return {
+      validated: true,
+      formControl: true,
+      hasError: false,
+      newPromotion: {
+        price: null,
+        price_tax: 0,
+        discount: 0
+      },
+      errors: [],
+      promotions: []
+    };
+  },
 
-    props: ['priceBase', 'productId'],
-    methods: {
-        savePromotion: function savePromotion() {
-            var daterangepicker_start = $('input[name="daterangepicker_start"]').val();
-            var daterangepicker_end = $('input[name="daterangepicker_end"]').val();
-            var price = $('input[name="price_promotion"]').val();
-            var price_tax = $('input[name="tax"]').val();
-            var discount = this.newPromotion.discount;
-            var price_total = 0;
+  props: ["priceBase", "productId"],
+  methods: {
+    savePromotion: function savePromotion() {
+      var _this = this;
 
-            price_total = price - price * discount / 100;
-            if (price_tax != 0) {
-                price_total = price_total * price_tax;
-            }
+      var daterangepicker_start = $('input[name="daterangepicker_start"]').val();
+      var daterangepicker_end = $('input[name="daterangepicker_end"]').val();
+      var price = 0;
+      var price_tax = this.newPromotion.price_tax;
+      var discount = this.newPromotion.discount;
+      var price_total = 0;
 
-            console.log(price_total);
+      if (this.validated == false) {
+        price = this.newPromotion.price;
+      } else {
+        price = this.priceBase;
+      }
+
+      price_total = price - price * discount / 100;
+      if (price_tax != 0) {
+        price_total = price_total * price_tax;
+      }
+
+      axios.post("/admin/promotions", {
+        price: price,
+        price_tax: price_tax,
+        price_total: price_total,
+        discount: discount,
+        product_id: this.productId,
+        ends_at: daterangepicker_end,
+        start_at: daterangepicker_start
+      }).then(function (response) {
+        $.notify({ message: response.data.response }, { type: "success" });
+        _this.errors = [];
+      }).catch(function (errors) {
+        if (errors.response.status == 422) {
+          _this.errors = errors.response.data.errors;
+          if (_this.errors.product_id[0] == "unico") {
+            $.notify({ message: "Solo puedes crear una promoción por producto" }, { type: "danger" });
+          }
         }
+      });
+    },
+    getPromotion: function getPromotion() {
+      var _this2 = this;
+
+      axios.get("/admin/promotions/" + this.productId).then(function (response) {
+        _this2.promotions = response.data.data;
+      });
     }
+  },
+  mounted: function mounted() {
+    this.getPromotion();
+  }
 });
 
 /***/ }),
-/* 106 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -53033,110 +53101,261 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("div", [
-      _c("div", { staticClass: "card" }, [
-        _c("div", { staticClass: "card-header" }, [_vm._v("Descuentos")]),
+    _c("div", { staticClass: "card" }, [
+      _c("div", { staticClass: "card-header" }, [_vm._v("Crear un descuento")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "card-body" }, [
+        _vm._m(0),
         _vm._v(" "),
-        _c("div", { staticClass: "card-body" }, [
-          _vm._m(0),
+        _c("br"),
+        _vm._v(" "),
+        _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col-xs-12 col-sm-2" }, [
+            _c("div", { staticClass: "form-group" }, [
+              _c("label", [_vm._v("Precio")]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.newPromotion.price,
+                    expression: "newPromotion.price"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: {
+                  type: "number",
+                  disabled: _vm.validated,
+                  placeholder: _vm.priceBase
+                },
+                domProps: { value: _vm.newPromotion.price },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.newPromotion, "price", $event.target.value)
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _vm.errors.price
+                ? _c("div", { staticClass: "help-block" }, [
+                    _c("b", [_vm._v(_vm._s(_vm.errors.price[0]))])
+                  ])
+                : _vm._e()
+            ])
+          ]),
           _vm._v(" "),
-          _c("br"),
+          _c("div", { staticClass: "col-xs-12 col-sm-2" }, [
+            _c("label", [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.validated,
+                    expression: "validated"
+                  }
+                ],
+                attrs: { type: "checkbox", name: "", id: "" },
+                domProps: {
+                  checked: _vm.validated,
+                  checked: Array.isArray(_vm.validated)
+                    ? _vm._i(_vm.validated, null) > -1
+                    : _vm.validated
+                },
+                on: {
+                  change: function($event) {
+                    var $$a = _vm.validated,
+                      $$el = $event.target,
+                      $$c = $$el.checked ? true : false
+                    if (Array.isArray($$a)) {
+                      var $$v = null,
+                        $$i = _vm._i($$a, $$v)
+                      if ($$el.checked) {
+                        $$i < 0 && (_vm.validated = $$a.concat([$$v]))
+                      } else {
+                        $$i > -1 &&
+                          (_vm.validated = $$a
+                            .slice(0, $$i)
+                            .concat($$a.slice($$i + 1)))
+                      }
+                    } else {
+                      _vm.validated = $$c
+                    }
+                  }
+                }
+              }),
+              _vm._v(" Mantener precio base\n                    ")
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col-xs-12 col-sm-2" }, [
+            _c("div", { staticClass: "form-group" }, [
+              _c("label", [_vm._v("Aplica un descuento de:")]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.newPromotion.discount,
+                    expression: "newPromotion.discount"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { type: "number", name: "discount" },
+                domProps: { value: _vm.newPromotion.discount },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.newPromotion, "discount", $event.target.value)
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _vm.errors.discount
+                ? _c("div", { staticClass: "help-block" }, [
+                    _c("b", [_vm._v(_vm._s(_vm.errors.discount[0]))])
+                  ])
+                : _vm._e()
+            ])
+          ]),
           _vm._v(" "),
-          _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "col-xs-12 col-sm-2" }, [
-              _c("div", { staticClass: "form-group" }, [
-                _c("label", [_vm._v("Precio")]),
-                _vm._v(" "),
-                _c("input", {
-                  staticClass: "form-control",
-                  attrs: {
-                    type: "number",
-                    name: "price_promotion",
-                    disabled: _vm.validated
-                  },
-                  domProps: { value: _vm.validated ? _vm.priceBase : 0 }
-                })
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-xs-12 col-sm-2" }, [
-              _c("label", [
-                _c("input", {
+          _c("div", { staticClass: "col-xs-12 col-sm-2" }, [
+            _c("div", { staticClass: "form-group" }, [
+              _c("label", [_vm._v("¿Este precio lleva impuesto?")]),
+              _vm._v(" "),
+              _c(
+                "select",
+                {
                   directives: [
                     {
                       name: "model",
                       rawName: "v-model",
-                      value: _vm.validated,
-                      expression: "validated"
+                      value: _vm.newPromotion.price_tax,
+                      expression: "newPromotion.price_tax"
                     }
                   ],
-                  attrs: { type: "checkbox", name: "", id: "" },
-                  domProps: {
-                    checked: _vm.validated,
-                    checked: Array.isArray(_vm.validated)
-                      ? _vm._i(_vm.validated, null) > -1
-                      : _vm.validated
-                  },
+                  staticClass: "form-control",
+                  attrs: { name: "tax", id: "" },
                   on: {
                     change: function($event) {
-                      var $$a = _vm.validated,
-                        $$el = $event.target,
-                        $$c = $$el.checked ? true : false
-                      if (Array.isArray($$a)) {
-                        var $$v = null,
-                          $$i = _vm._i($$a, $$v)
-                        if ($$el.checked) {
-                          $$i < 0 && (_vm.validated = $$a.concat([$$v]))
-                        } else {
-                          $$i > -1 &&
-                            (_vm.validated = $$a
-                              .slice(0, $$i)
-                              .concat($$a.slice($$i + 1)))
-                        }
-                      } else {
-                        _vm.validated = $$c
-                      }
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.$set(
+                        _vm.newPromotion,
+                        "price_tax",
+                        $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      )
                     }
                   }
-                }),
-                _vm._v(" Mantener precio base\n                    ")
-              ])
+                },
+                [
+                  _c("option", { attrs: { value: "0" } }, [_vm._v("N/A")]),
+                  _vm._v(" "),
+                  _c("option", { attrs: { value: "1.19" } }, [_vm._v("19%")])
+                ]
+              )
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col-xs-12 col-sm-3" }, [
+            _c("div", { staticClass: "form-group" }, [
+              _c("label", [_vm._v("Fecha de incio / Finaliza")]),
+              _vm._v(" "),
+              _vm._m(1),
+              _vm._v(" "),
+              _vm.errors.ends_at
+                ? _c("div", { staticClass: "help-block" }, [
+                    _c("b", [_vm._v(_vm._s(_vm.errors.ends_at[0]))])
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.errors.start_at
+                ? _c("div", { staticClass: "help-block" }, [
+                    _c("b", [_vm._v(_vm._s(_vm.errors.start_at[0]))])
+                  ])
+                : _vm._e()
             ])
           ]),
           _vm._v(" "),
-          _vm._m(1),
-          _vm._v(" "),
-          _c("div", { staticClass: "row" }, [
-            _vm._m(2),
-            _vm._v(" "),
-            _c(
-              "div",
-              {
-                staticClass: "col-xs-12 col-sm-3",
-                staticStyle: { "margin-top": "30px" }
-              },
-              [
-                _c("div", { staticClass: "form-group" }, [
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-info",
-                      attrs: { type: "button" },
-                      on: {
-                        click: function($event) {
-                          _vm.savePromotion()
-                        }
+          _c(
+            "div",
+            {
+              staticClass: "col-xs-12 col-sm-3",
+              staticStyle: { "margin-top": "30px" }
+            },
+            [
+              _c("div", { staticClass: "form-group" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-info",
+                    attrs: { type: "button" },
+                    on: {
+                      click: function($event) {
+                        _vm.savePromotion()
                       }
-                    },
-                    [
-                      _c("i", { staticClass: "fa fa-plus-circle" }),
-                      _vm._v(" Aplicar descuento")
-                    ]
-                  )
-                ])
-              ]
-            )
-          ])
+                    }
+                  },
+                  [
+                    _c("i", { staticClass: "fa fa-plus-circle" }),
+                    _vm._v(" Aplicar descuento")
+                  ]
+                )
+              ])
+            ]
+          )
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "card" }, [
+      _c("div", { staticClass: "card-header" }, [
+        _vm._v("\n            Descuento\n        ")
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "card-body" }, [
+        _c("table", { staticClass: "table table-bordered" }, [
+          _vm._m(2),
+          _vm._v(" "),
+          _c(
+            "tbody",
+            _vm._l(_vm.promotions, function(promotion, index) {
+              return _c("tr", { key: index }, [
+                _c("td", [_vm._v(_vm._s(promotion.id))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(promotion.humanPrice))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(promotion.humanPriceTotal))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(promotion.humanDiscount))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(promotion.start_at))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(promotion.ends_at))]),
+                _vm._v(" "),
+                _vm._m(3, true)
+              ])
+            })
+          )
         ])
       ])
     ])
@@ -53178,32 +53397,18 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-xs-12 col-sm-2" }, [
-        _c("div", { staticClass: "form-group" }, [
-          _c("label", [_vm._v("Aplica un descuento de:")]),
-          _vm._v(" "),
-          _c("input", {
-            staticClass: "form-control",
-            attrs: { type: "number", name: "discount" }
-          })
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-xs-12 col-sm-2" }, [
-        _c("div", { staticClass: "form-group" }, [
-          _c("label", [_vm._v("¿Este precio lleva impuesto?")]),
-          _vm._v(" "),
-          _c(
-            "select",
-            { staticClass: "form-control", attrs: { name: "tax", id: "" } },
-            [
-              _c("option", { attrs: { value: "0" } }, [_vm._v("N/A")]),
-              _vm._v(" "),
-              _c("option", { attrs: { value: "1.19" } }, [_vm._v("19%")])
-            ]
-          )
-        ])
+    return _c("div", { staticClass: "form-group" }, [
+      _c("div", { staticClass: "input-group" }, [
+        _c("div", { staticClass: "input-group-prepend" }, [
+          _c("span", { staticClass: "input-group-text" }, [
+            _c("i", { staticClass: "fa fa-clock-o" })
+          ])
+        ]),
+        _vm._v(" "),
+        _c("input", {
+          staticClass: "form-control float-right active",
+          attrs: { type: "text", readonly: "", id: "reservationtime" }
+        })
       ])
     ])
   },
@@ -53211,25 +53416,32 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-xs-12 col-sm-3" }, [
-      _c("div", { staticClass: "form-group" }, [
-        _c("label", [_vm._v("Fecha de incio / Finaliza")]),
-        _vm._v(" "),
-        _c("div", { staticClass: "form-group" }, [
-          _c("div", { staticClass: "input-group" }, [
-            _c("div", { staticClass: "input-group-prepend" }, [
-              _c("span", { staticClass: "input-group-text" }, [
-                _c("i", { staticClass: "fa fa-clock-o" })
-              ])
-            ]),
-            _vm._v(" "),
-            _c("input", {
-              staticClass: "form-control float-right active",
-              attrs: { type: "text", readonly: "", id: "reservationtime" }
-            })
-          ])
-        ])
-      ])
+    return _c("thead", [
+      _c("th", [_vm._v("ID")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Precio")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Precio con descuento")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Descuento")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Fecha de inicio")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Fecha de finalización")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Eliminar")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", { staticClass: "text-center" }, [
+      _c(
+        "button",
+        { staticClass: "btn btn-danger", attrs: { type: "button" } },
+        [_c("i", { staticClass: "fa fa-trash" })]
+      )
     ])
   }
 ]
@@ -53238,7 +53450,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-34ef2cab", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-21c0a6e2", module.exports)
   }
 }
 

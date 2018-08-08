@@ -109,7 +109,7 @@
         $('#reservationtime').daterangepicker({
             timePicker         : true,
             timePickerIncrement: 30,
-            format             : 'YYYY-MM-DD H:mm:ss',
+            format             : 'YYYY-MM-DD H:mm',
             timePicker24Hour:false,
             locale:{
                 "daysOfWeek": ["Dom", "Lun","Mar","Mie","Jue","Vie","Sab"],

@@ -16,11 +16,14 @@ class CreatePromotionsTable extends Migration
         Schema::create('promotions', function (Blueprint $table) {
             $table->increments('id');
             $table->float('price');
+            $table->float('price_tax');
+            $table->float('price_total');
             $table->float('discount');
+            
             $table->integer('product_id')->unsigned();
-            $table->timestamps();
             $table->dateTime('ends_at');
             $table->dateTime('start_at');
+            $table->timestamps();
             //Relation
             
             $table->foreign('product_id')->references('id')->on('products');
