@@ -5,9 +5,9 @@
 @endsection
 @section('content')
 <div class="col-12">
-    <div class="card card-primary">
+    <div class="card">
             <div class="card-header">
-                <h3 class="card-title"><i class="fa fa-plus-circle"></i> Editar Categoría</h3>
+                <h4 class="card-title"><i class="fa fa-tags"></i> Editar Categoría</h4>
             </div>    
             <div class="card-body">
                {!! Form::model($category, ['route' => ['category.update', $category->id] , 'method' => 'put']) !!}

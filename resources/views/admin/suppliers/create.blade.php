@@ -10,7 +10,7 @@
 {!! Form::open(['route' => 'suppliers.store', 'method' => 'post', 'files' => true]) !!}
 <div class="row">
     <div class="col-xs-12 col-sm-8">
-        <div class="card card-primary">
+        <div class="card">
             <div class="card-header">
                 <h3 class="card-title"><i class="fa fa-info-circle"></i> Datos básicos</h3>
             </div>    
@@ -20,7 +20,7 @@
         </div>
     </div>
     <div class="col-xs-12 col-sm-4">
-        <div class="card card-primary">
+        <div class="card">
             <div class="card-header">
                 <h3 class="card-title"><i class="fa fa-map-marker"></i> Ubicación</h3>
             </div>    
@@ -32,7 +32,7 @@
 </div>
 <div class="row">
     <div class="col-xs-12 col-sm-12">
-        <div class="card card-primary"> 
+        <div class="card"> 
             <div class="card-body">
                 {!! Form::button('<i class="fa fa-save"></i> Guardar', ['type' => 'submit', 'class' => 'btn btn-info pull-right']) !!}
             </div>
