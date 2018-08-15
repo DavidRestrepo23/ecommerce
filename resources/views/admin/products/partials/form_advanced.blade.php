@@ -61,9 +61,9 @@
         </div>
         <div class="card-body">
             @if($product && $product->category)
-                <category-edit-component categoryindex="{{ $product->category->id }}" productid="{{ $product->id }}"></category-edit-component>
+                <get-categories-edit-component categoryindex="{{ $product->category->id }}" productid="{{ $product->id }}"></get-categories-edit-component>
             @else
-            <category-create-component></category-create-component>
+            <get-categories-component></get-categories-component>
            @endif
         </div>
     </div>

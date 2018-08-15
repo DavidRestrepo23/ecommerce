@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 @section('page_title', 'Crear Subcategoría')
 @section('route')
-<a href="{{ route('category.index') }}" class="nav-link"><i class="fa fa-angle-double-left"></i> Volver atrás</a> 
+<a href="{{ route('categories.index') }}" class="nav-link"><i class="fa fa-angle-double-left"></i> Volver atrás</a> 
 @endsection
 @section('content')
 <div class="col-12">

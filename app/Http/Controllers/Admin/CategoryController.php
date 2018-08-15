@@ -31,8 +31,9 @@ class CategoryController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
-        return view('admin.categories.create');
+    {   
+        $category = null;
+        return view('admin.categories.create', compact('category'));
     }
 
     /**
@@ -124,13 +125,16 @@ class CategoryController extends Controller
     }
 
 
-    public function changeStatus(Request $request){
+    /**
+     * Cambiar el estado de la categoría desde el listado
+     * 
+     */
+
+    public function update_status(Request $request, $id){
         if($request->ajax()){
             
-            $status = $request->_status;
-            
-            $category = Category::find($request->_categoryId);
-            $category->fill(['status' => $status])->save();
+            $category = Category::find($id);
+            $category->fill(['status' => $request->status])->save();
             
             return response()->json([
                 'res' => 'Categoria actualiza con éxito',
@@ -140,5 +144,19 @@ class CategoryController extends Controller
         abort(401);
     }
 
+
+    /**
+     * Obtener todas la categorias para mostrar en una lista 
+     * de radiobutton al momento de crear.
+     * 
+     */
+   public function get_categories(){
+        $categories = Category::with('sub_categories')->get();
+        return response()->json([
+            'categories' => $categories
+        ]);
+   }
+
+    
 
 }

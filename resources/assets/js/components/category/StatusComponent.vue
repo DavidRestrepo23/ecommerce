@@ -14,15 +14,14 @@
         name: 'StatusCategoryComponent',
         data(){
             return{
-                endpoints:'categories/change-status',
+                endpoints:'',
             }
         },
         props:['status', 'categoryid'],
         methods:{
             changeStatus(status,categoryid){
-                axios.post(this.endpoints ,{
-                    _status : status,
-                    _categoryId : categoryid
+                axios.put(`/admin/categories/update-status/${categoryid}` ,{
+                    status : status,
                 }).then((response => {
                     $.notify({
                         message: response.data.res,

@@ -50,14 +50,6 @@ Route::prefix('api')->namespace('Api')->group(function () {
 /** API Feature */
 
 
-/** API Category and Subcategory */
-Route::prefix('api')->namespace('Api')->group(function () {
-    Route::get('category/get-category', 'ApiCategoryController@categories');
-    Route::get('subcategories/get-subcategory-product/{id}', 'ApiCategoryController@subcategories');
-});
-/** API Category and Subcategory */
-
-
 /** API Attributes and AttributeDetails */
 Route::prefix('api')->namespace('Api')->group(function () {
     Route::get('attributes', 'ApiAttributeController@attributes');
@@ -78,76 +70,91 @@ Route::prefix('api')->namespace('Api')->group(function () {
 /** API GroupCombinations */
 
 
-
 Route::prefix('shopping_cart')->namespace('Cart')->group(function () {
     Route::post('/add', 'ProductInCartController@store');
     Route::post('/decrement', 'ProductInCartController@decrement');
 });
 
 
-
 /** ADMIN */
 Route::prefix('admin')->namespace('Admin')->group(function () {
     /** Products */
-    Route::resource('/products', 'ProductController')->names([
-        'index' => 'product.index',
-        'create' => 'product.create',
-        'store' => 'product.store',
-        'edit' => 'product.edit',
-        'update' => 'product.update',
-        'destroy' => 'product.destroy'
-    ]);
+        Route::resource('/products', 'ProductController')->names([
+            'index' => 'product.index',
+            'create' => 'product.create',
+            'store' => 'product.store',
+            'edit' => 'product.edit',
+            'update' => 'product.update',
+            'destroy' => 'product.destroy'
+        ]);
     /** endProducts */
 
     /** Categories */
-    Route::get('/categories', 'CategoryController@index')->name('category.index');
-    Route::get('/categories/create', 'CategoryController@create')->name('category.create');
-    Route::post('/categories/create', 'CategoryController@store')->name('category.store');
-    Route::get('/categories/{id}/edit', 'CategoryController@edit')->name('category.edit');
-    Route::put('/categories/{id}/update', 'CategoryController@update')->name('category.update');
-    Route::post('/categories/change-status', 'CategoryController@changeStatus');
+        Route::resource('/categories', 'CategoryController')->names([
+            'index' => 'categories.index',
+            'create' => 'categories.create',
+            'store' => 'categories.store',
+            'edit' => 'categories.edit',
+            'update' => 'categories.update',
+            'destroy' => 'categories.destroy'
+        ]);
+        
+        /** Custom methods  */
+            Route::get('/categories/get-category/', 'CategoryController@get_categories');
+        /** Custom methods  */
+    
     /** endCategories */
 
-
     /** SubCategories */
-    
+        Route::resource('/subcategories', 'SubcategoryController')->names([
+            'create' => 'subcategory.create',
+            'store' => 'subcategory.store',
+            'show' => 'subcategory.show',
+            'edit' => 'subcategory.edit',
+            'update' => 'subcategory.update',
+            'destroy' => 'subcategory.destroy'
+        ])->except(['index']);
 
-    Route::get('/subcategories/create', 'SubcategoryController@create')->name('subcategory.create');
-    Route::post('/subcategories/create', 'SubcategoryController@store')->name('subcategory.store');
-    Route::get('/subcategories/{id}', 'SubcategoryController@show')->name('subcategory.show');
-    Route::get('/subcategories/{id}/edit', 'SubcategoryController@edit')->name('subcategory.edit');
-    Route::put('/subcategories/{id}/edit', 'SubcategoryController@update')->name('subcategory.update');
-    Route::post('/subcategories/change-status', 'SubcategoryController@changeStatus');
-
+        /**Custom methods */
+            Route::post('/subcategories/change-status', 'SubcategoryController@changeStatus');
+            Route::get('/subcategories/get-subcategory-product/{id}', 'SubcategoryController@subcategories');
+        /**Custom methods */
 
     /** endSubCategories */
 
-    /** Featrue */
-    Route::resource('/features', 'FeatureController');
-    Route::resource('/features-details', 'FeatureDetailController');
-    /** endFeacture */
+    /** Feature */
+        Route::resource('/features', 'FeatureController');
+    /** endFeature */
+
+    /** Feature Details */
+         Route::resource('/features-details', 'FeatureDetailController');
+    /** Feature Details */
 
     /** Attribute */
-    Route::resource('/attributes', 'AttributeController');
-    Route::resource('/attributes-details', 'AttributeDetailController');
+        Route::resource('/attributes', 'AttributeController');
+        Route::resource('/attributes-details', 'AttributeDetailController');
     /** endAttribute */
 
     /** Supplier */
-    Route::resource('/suppliers', 'SupplierController');
+        Route::resource('/suppliers', 'SupplierController');
     /** endsupplier */
 
     /** ProductCombination */
-    Route::resource('/combinations', 'ProductCombinationController')->only(['store','update','destroy']);
-    Route::resource('/group-combinations-images', 'GroupCombinationImagesController')->only(['store', 'show' ,'update']);
+        Route::resource('/combinations', 'ProductCombinationController')->only(['store','update','destroy']);
+        Route::resource('/group-combinations-images', 'GroupCombinationImagesController')->only(['store', 'show' ,'update']);
     /** ProductCombination */
     
     /** PricesSpecifics */
-    Route::resource('/prices', 'PriceSpecificController')->only(['store', 'show' ,'update', 'destroy']);
+        Route::resource('/prices', 'PriceSpecificController')->only(['store', 'show' ,'update', 'destroy']);
     /** PricesSpecifics */
 
+    /** ProductPromotion */
+        Route::resource('/promotions', 'PromotionController')->only(['store', 'show' ,'update','destroy']);
+    /** ProductPromotion */
 
-    /** ProductPromotion */
-    Route::resource('/promotions', 'PromotionController')->only(['store', 'show' ,'update','destroy']);
-    /** ProductPromotion */
+
+
+
+
 
 });

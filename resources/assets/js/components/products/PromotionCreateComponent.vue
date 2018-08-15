@@ -157,6 +157,7 @@ export default {
         .then(response => {
           $.notify({ message: response.data.response }, { type: "success" });
           this.errors = [];
+          this.getPromotion();
         })
         .catch(errors => {
           if (errors.response.status == 422) {

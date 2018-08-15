@@ -29,6 +29,13 @@
             </span>
             @endif
         </div>
+        @if($category)
+            <div class="card">
+                <div class="card-body text-center">
+                    <img src="{{ $category->file }}" width="350px" style="margin-top:10px"  alt="">
+                </div>
+            </div>
+        @endif
     </div>
 </div>
 <div class="card-footer" style="margin-top:35px">

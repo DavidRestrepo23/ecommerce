@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Subcategory;
 use App\Category;
+use App\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SubCategoryStoreRequest;
@@ -23,7 +24,8 @@ class SubcategoryController extends Controller
     public function create()
     {
         $categories = Category::all()->pluck('name', 'id');
-        return view('admin.subcategories.create', compact('categories'));
+        $subcategory = null;
+        return view('admin.subcategories.create', compact('categories', 'subcategory'));
     }
 
     /**
@@ -119,6 +121,10 @@ class SubcategoryController extends Controller
     }
 
 
+   /**
+     * Cambiar el estado de la categoría desde el listado
+     * 
+     */
     public function changeStatus(Request $request){
         if($request->ajax()){
             
@@ -134,4 +140,20 @@ class SubcategoryController extends Controller
 
         abort(401);
     }
+
+
+
+    /**
+     * Obtener las subcategorias asociadas a este producto para
+     * mostrarlas en un checkbox al momento de editar.
+     * 
+     * @param  int  $id
+     */
+    public function subcategories($id){
+        $product= Product::find($id);
+        return response()->json([
+            'product' => $product->sub_categories->pluck('id')
+        ]);
+    }
+
 }

@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 @section('route')
-<a href="{{ route('category.index') }}" class="nav-link"><i class="fa fa-angle-double-left"></i> Volver atrás</a> 
+<a href="{{ route('categories.index') }}" class="nav-link"><i class="fa fa-angle-double-left"></i> Volver atrás</a> 
 @endsection
 @section('styles')
     <link rel="stylesheet" href="{{ asset('vendor/adminlte/plugins/datatables/dataTables.bootstrap4.css') }}">

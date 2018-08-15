@@ -8,7 +8,7 @@
     <div class="card">
       <div class="card-header">
             <h3 class="card-title pull-left">Listado de Categorias </h3>
-            <h3 class="card-title pull-right"><a href="{{ route('category.create') }}" class="btn btn-default"> <i class="fa fa-plus-circle"></i> Nueva Categoría</a></h3>
+            <h3 class="card-title pull-right"><a href="{{ route('categories.create') }}" class="btn btn-default"> <i class="fa fa-plus-circle"></i> Nueva Categoría</a></h3>
       </div>
       <!-- /.card-header -->
       <div class="card-body">
@@ -36,7 +36,7 @@
                             </a>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                 <a class="dropdown-item" href="{{ route('subcategory.show', $category->id) }}"><i class="fa fa-plus"></i> Subcategorías</a>
-                                <a class="dropdown-item" href="{{ route('category.edit', $category->id) }}"><i class="fa fa-edit"></i> Modificar</a>
+                                <a class="dropdown-item" href="{{ route('categories.edit', $category->id) }}"><i class="fa fa-edit"></i> Modificar</a>
                                 <a class="dropdown-item" href="#"><i class="fa fa-times"></i> Eliminar</a>
                             </div>
                         </div>

@@ -56,8 +56,12 @@ Vue.component('change-status-subcategory-component', require('./components/subca
 Vue.component('select-countries', require('./components/custom/CountryComponent.vue'));
 Vue.component('feature-products-component', require('./components/products/FeatureProductsComponent.vue'));
 Vue.component('price-specifics-component', require('./components/products/PriceSpeceficComponent.vue'));
-Vue.component('category-edit-component', require('./components/products/CategoryEditComponent.vue'));
-Vue.component('category-create-component', require('./components/products/CategoryCreateComponent.vue'));
+
+
+Vue.component('get-categories-edit-component', require('./components/products/GetCategoriesAndSubcategoriesComponent.vue'));
+
+
+Vue.component('get-categories-component', require('./components/products/GetCategoriesComponent.vue'));
 Vue.component('display-product-combination-component', require('./components/products/DisplayProductCombination.vue'));
 Vue.component('product-combination-component', require('./components/products/ProductCombinationComponent.vue'));
 Vue.component('product-status-component', require('./components/products/StatusComponent.vue'));
